@@ -1,4 +1,6 @@
-﻿namespace NP.Lti13Platform.Core.Populators
+﻿using NP.Lti13Platform.Core.Interfaces;
+
+namespace NP.Lti13Platform.Core.Populators
 {
     /// <summary>
     /// Base class for populators.
@@ -12,7 +14,7 @@
         /// <param name="scope">The message scope.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
-        public abstract Task PopulateAsync(object obj, MessageScope scope, CancellationToken cancellationToken = default);
+        public abstract Task PopulateAsync(object obj, MessageScope<IAddress, IJwks> scope, CancellationToken cancellationToken = default);
     }
 
     /// <summary>
@@ -28,10 +30,10 @@
         /// <param name="scope">The message scope.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
-        public abstract Task PopulateAsync(T obj, MessageScope scope, CancellationToken cancellationToken = default);
+        public abstract Task PopulateAsync(T obj, MessageScope<IAddress, IJwks> scope, CancellationToken cancellationToken = default);
 
         /// <inheritdoc />
-        public override async Task PopulateAsync(object obj, MessageScope scope, CancellationToken cancellationToken = default)
+        public override async Task PopulateAsync(object obj, MessageScope<IAddress, IJwks> scope, CancellationToken cancellationToken = default)
         {
             await PopulateAsync((T)obj, scope, cancellationToken);
         }

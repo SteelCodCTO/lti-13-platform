@@ -1,17 +1,15 @@
-﻿using NP.Lti13Platform.Core.Interfaces;
-
-namespace NP.Lti13Platform.Core.Models;
+﻿namespace NP.Lti13Platform.Core.Interfaces;
 
 /// <summary>
 /// Represents a user in the LTI 1.3 platform with standard identity attributes.
 /// This class follows the OpenID Connect Core specification for user information.
 /// </summary>
-public class User : IUser<Address>
+public interface IUser<TAddress> where TAddress : IAddress
 {
     /// <summary>
     /// Gets or sets the unique identifier for the user.
     /// </summary>
-    public required string Id { get; set; }
+    public string Id { get; set; }
 
     /// <summary>
     /// Full name in displayable form including all name parts, possibly including titles and suffixes, ordered according to the user's locale and preferences.
@@ -107,7 +105,7 @@ public class User : IUser<Address>
     /// <summary>
     /// User's preferred postal address.
     /// </summary>
-    public Address? Address { get; set; }
+    public TAddress? Address { get; set; }
 
     /// <summary>
     /// Username (typically, the name a user logs in with).
@@ -117,18 +115,18 @@ public class User : IUser<Address>
     /// <summary>
     /// One or more URIs describing the user's organizational properties (for example, an ldap:// URI).
     /// </summary>
-    public IEnumerable<Uri> Orgs { get; set; } = [];
+    public IEnumerable<Uri> Orgs { get; set; }
 
     /// <summary>
     /// A list of grade(s) for which the user is enrolled. The permitted vocabulary is from the grades field utilized in <see href="https://ceds.ed.gov/CEDSElementDetails.aspx?TermId=7100">OneRoster Users</see>.
     /// </summary>
-    public IEnumerable<string> OneRosterGrades { get; set; } = [];
+    public IEnumerable<string> OneRosterGrades { get; set; }
 }
 
 /// <summary>
 /// Represents a physical address following the OpenID Connect Core specification.
 /// </summary>
-public class Address: IAddress
+public interface IAddress
 {
     /// <summary>
     /// Full mailing address, formatted for display or use on a mailing label. This field MAY contain multiple lines, separated by newlines. Newlines can be represented either as a carriage return/line feed pair ("\r\n") or as a single line feed character ("\n").

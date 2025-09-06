@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Routing;
 using NP.Lti13Platform.AssignmentGradeServices.Services;
 using NP.Lti13Platform.Core.Populators;
+using NP.Lti13Platform.Core.Interfaces;
 using NP.Lti13Platform.Core.Services;
 using System.Text.Json.Serialization;
 
@@ -46,7 +47,7 @@ public interface IServiceEndpoints
 /// <summary>
 /// Populates service endpoints for assignment grade services.
 /// </summary>
-public class ServiceEndpointsPopulator(LinkGenerator linkGenerator, ILti13CoreDataService dataService, ILti13AssignmentGradeConfigService assignmentGradeService) : Populator<IServiceEndpoints>
+public class ServiceEndpointsPopulator(LinkGenerator linkGenerator, ILti13CoreDataService<IAddress, IJwks> dataService, ILti13AssignmentGradeConfigService assignmentGradeService) : Populator<IServiceEndpoints>
 {
     /// <summary>
     /// Populates the service endpoints for the given scope.
@@ -54,7 +55,7 @@ public class ServiceEndpointsPopulator(LinkGenerator linkGenerator, ILti13CoreDa
     /// <param name="obj">The service endpoints object to populate.</param>
     /// <param name="scope">The message scope.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
-    public override async Task PopulateAsync(IServiceEndpoints obj, MessageScope scope, CancellationToken cancellationToken = default)
+    public override async Task PopulateAsync(IServiceEndpoints obj, MessageScope<IAddress, IJwks> scope, CancellationToken cancellationToken = default)
     {
         var lineItemScopes = scope.Tool.ServiceScopes
             .Intersect([ServiceScopes.LineItem, ServiceScopes.LineItemReadOnly, ServiceScopes.ResultReadOnly, ServiceScopes.Score])

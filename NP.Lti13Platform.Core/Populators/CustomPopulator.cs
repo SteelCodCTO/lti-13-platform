@@ -1,6 +1,6 @@
 ﻿using NP.Lti13Platform.Core.Constants;
 using NP.Lti13Platform.Core.Extensions;
-using NP.Lti13Platform.Core.Models;
+using NP.Lti13Platform.Core.Interfaces;
 using NP.Lti13Platform.Core.Services;
 using System.Text.Json.Serialization;
 
@@ -23,7 +23,7 @@ public interface ICustomMessage
 /// </summary>
 /// <param name="platformService">The platform service.</param>
 /// <param name="dataService">The core data service.</param>
-public class CustomPopulator(ILti13PlatformService platformService, ILti13CoreDataService dataService) : Populator<ICustomMessage>
+public class CustomPopulator(ILti13PlatformService platformService, ILti13CoreDataService<IAddress, IJwks> dataService) : Populator<ICustomMessage>
 {
     private static readonly IEnumerable<string> LineItemAttemptGradeVariables = [
         Lti13ResourceLinkVariables.AvailableUserStartDateTime,
@@ -34,7 +34,7 @@ public class CustomPopulator(ILti13PlatformService platformService, ILti13CoreDa
         Lti13ResourceLinkVariables.LineItemUserReleaseDateTime];
 
     /// <inheritdoc />
-    public override async Task PopulateAsync(ICustomMessage obj, MessageScope scope, CancellationToken cancellationToken = default)
+    public override async Task PopulateAsync(ICustomMessage obj, MessageScope<IAddress, IJwks> scope, CancellationToken cancellationToken = default)
     {
         var customDictionary = scope.Tool.Custom.Merge(scope.Deployment.Custom).Merge(scope.ResourceLink?.Custom);
 
@@ -43,7 +43,7 @@ public class CustomPopulator(ILti13PlatformService platformService, ILti13CoreDa
             return;
         }
 
-        Platform? platform = null;
+        IPlatform? platform = null;
         if (customDictionary.Values.Any(v => v.StartsWith(Lti13ToolPlatformVariables.Version.Split('.')[0])) == true)
         {
             platform = await platformService.GetPlatformAsync(scope.Tool.ClientId, cancellationToken);
@@ -69,9 +69,9 @@ public class CustomPopulator(ILti13PlatformService platformService, ILti13CoreDa
             }
         }
 
-        LineItem? lineItem = null;
-        Attempt? attempt = null;
-        Grade? grade = null;
+        ILineItem? lineItem = null;
+        IAttempt? attempt = null;
+        IGrade? grade = null;
         if (customDictionary.Values.Any(v => LineItemAttemptGradeVariables.Contains(v)) && scope.Context != null && scope.ResourceLink != null)
         {
             var lineItems = await dataService.GetLineItemsAsync(scope.Deployment.Id, scope.Context.Id, 0, 1, null, scope.ResourceLink.Id, null, cancellationToken);

@@ -1,4 +1,5 @@
-﻿using NP.Lti13Platform.Core.Models;
+﻿using NP.Lti13Platform.Core.Interfaces;
+using NP.Lti13Platform.Core.Models;
 
 namespace NP.Lti13Platform.Core.Services
 {
@@ -13,6 +14,6 @@ namespace NP.Lti13Platform.Core.Services
         /// <param name="clientId">The client ID of the platform.</param>
         /// <param name="cancellationToken">A token to cancel the operation.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the <see cref="Platform"/> if found; otherwise, null.</returns>
-        Task<Platform?> GetPlatformAsync(string clientId, CancellationToken cancellationToken = default);
+        Task<IPlatform?> GetPlatformAsync(string clientId, CancellationToken cancellationToken = default);
     }
 }

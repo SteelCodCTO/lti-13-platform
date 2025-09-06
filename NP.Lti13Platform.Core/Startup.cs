@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using NP.Lti13Platform.Core.Configs;
 using NP.Lti13Platform.Core.Constants;
+using NP.Lti13Platform.Core.Interfaces;
 using NP.Lti13Platform.Core.Models;
 using NP.Lti13Platform.Core.Populators;
 using NP.Lti13Platform.Core.Services;
@@ -71,7 +72,7 @@ public static class Startup
 
         builder.Services.AddHttpContextAccessor();
 
-        builder.Services.AddOptions<Platform>().BindConfiguration("Lti13Platform:Platform");
+        builder.Services.AddOptions<IPlatform>().BindConfiguration("Lti13Platform:Platform");
         builder.Services.TryAddSingleton<ILti13PlatformService, DefaultPlatformService>();
 
         builder.Services.AddOptions<Lti13PlatformTokenConfig>()
@@ -89,9 +90,9 @@ public static class Startup
     /// <param name="builder">The <see cref="Lti13PlatformBuilder"/>.</param>
     /// <param name="serviceLifetime">The <see cref="ServiceLifetime"/> of the data service.</param>
     /// <returns>The <see cref="Lti13PlatformBuilder"/>.</returns>
-    public static Lti13PlatformBuilder WithLti13CoreDataService<T>(this Lti13PlatformBuilder builder, ServiceLifetime serviceLifetime = ServiceLifetime.Transient) where T : ILti13CoreDataService
+    public static Lti13PlatformBuilder WithLti13CoreDataService<T>(this Lti13PlatformBuilder builder, ServiceLifetime serviceLifetime = ServiceLifetime.Transient) where T : ILti13CoreDataService<IAddress, IJwks>
     {
-        builder.Services.Add(new ServiceDescriptor(typeof(ILti13CoreDataService), typeof(T), serviceLifetime));
+        builder.Services.Add(new ServiceDescriptor(typeof(ILti13CoreDataService<IAddress, IJwks>), typeof(T), serviceLifetime));
         return builder;
     }
 
@@ -149,7 +150,7 @@ public static class Startup
         }
 
         endpointRouteBuilder.MapGet(config.JwksUrl,
-            async (ILti13CoreDataService dataService, CancellationToken cancellationToken) =>
+            async (ILti13CoreDataService<IAddress, IJwks> dataService, CancellationToken cancellationToken) =>
             {
                 var keys = await dataService.GetPublicKeysAsync(cancellationToken);
                 var keySet = new JsonWebKeySet();
@@ -171,21 +172,21 @@ public static class Startup
             .WithDescription("Gets the public keys used for JWT signing verification.");
 
         endpointRouteBuilder.MapGet(config.AuthorizationUrl,
-            async ([AsParameters] AuthenticationRequest queryString, IServiceProvider serviceProvider, ILti13TokenConfigService tokenService, ILti13CoreDataService dataService, IUrlServiceHelper urlServiceHelper, CancellationToken cancellationToken) =>
+            async ([AsParameters] AuthenticationRequest queryString, IServiceProvider serviceProvider, ILti13TokenConfigService tokenService, ILti13CoreDataService<IAddress, IJwks> dataService, IUrlServiceHelper urlServiceHelper, CancellationToken cancellationToken) =>
             {
                 return await HandleAuthorization(queryString, serviceProvider, tokenService, dataService, urlServiceHelper, cancellationToken);
             })
             .ConfigureAuthorizationEndpoint(openAPIGroupName);
 
         endpointRouteBuilder.MapPost(config.AuthorizationUrl,
-            async ([FromForm] AuthenticationRequest form, IServiceProvider serviceProvider, ILti13TokenConfigService tokenService, ILti13CoreDataService dataService, IUrlServiceHelper urlServiceHelper, CancellationToken cancellationToken) =>
+            async ([FromForm] AuthenticationRequest form, IServiceProvider serviceProvider, ILti13TokenConfigService tokenService, ILti13CoreDataService<IAddress, IJwks> dataService, IUrlServiceHelper urlServiceHelper, CancellationToken cancellationToken) =>
             {
                 return await HandleAuthorization(form, serviceProvider, tokenService, dataService, urlServiceHelper, cancellationToken);
             })
             .ConfigureAuthorizationEndpoint(openAPIGroupName);
 
         endpointRouteBuilder.MapPost(config.TokenUrl,
-            async ([FromForm] TokenRequest request, LinkGenerator linkGenerator, IHttpContextAccessor httpContextAccessor, ILti13CoreDataService dataService, ILti13TokenConfigService tokenService, CancellationToken cancellationToken) =>
+            async ([FromForm] TokenRequest request, LinkGenerator linkGenerator, IHttpContextAccessor httpContextAccessor, ILti13CoreDataService<IAddress, IJwks> dataService, ILti13TokenConfigService tokenService, CancellationToken cancellationToken) =>
             {
                 const string AUTH_SPEC_URI = "https://www.imsglobal.org/spec/security/v1p0/#using-json-web-tokens-with-oauth-2-0-client-credentials-grant";
                 const string SCOPE_SPEC_URI = "https://www.imsglobal.org/spec/lti-ags/v2p0";
@@ -304,7 +305,7 @@ public static class Startup
         return endpointRouteBuilder;
     }
 
-    private static async Task<IResult> HandleAuthorization(AuthenticationRequest request, IServiceProvider serviceProvider, ILti13TokenConfigService tokenService, ILti13CoreDataService dataService, IUrlServiceHelper urlServiceHelper, CancellationToken cancellationToken)
+    private static async Task<IResult> HandleAuthorization(AuthenticationRequest request, IServiceProvider serviceProvider, ILti13TokenConfigService tokenService, ILti13CoreDataService<IAddress, IJwks> dataService, IUrlServiceHelper urlServiceHelper, CancellationToken cancellationToken)
     {
         const string INVALID_REQUEST = "invalid_request";
         const string INVALID_CLIENT = "invalid_client";
@@ -388,7 +389,7 @@ public static class Startup
             return Results.BadRequest(new LtiBadRequest { Error = UNAUTHORIZED_CLIENT, Error_Description = USER_CLIENT_MISMATCH, Error_Uri = string.Empty });
         }
 
-        User? actualUser = null; ;
+        IUser<IAddress>? actualUser = null; ;
         if (!string.IsNullOrWhiteSpace(actualUserId))
         {
             actualUser = await dataService.GetUserAsync(actualUserId, cancellationToken);
@@ -451,8 +452,8 @@ public static class Startup
             ltiMessage.TimeZone = userPermissions.TimeZone ? user.TimeZone : null;
         }
 
-        var scope = new MessageScope(
-            new UserScope(user, actualUser, isAnonymous),
+        var scope = new MessageScope<IAddress, IJwks>(
+            new UserScope<IAddress>(user, actualUser, isAnonymous),
             tool,
             deployment,
             context,

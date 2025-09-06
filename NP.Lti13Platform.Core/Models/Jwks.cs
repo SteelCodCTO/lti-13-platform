@@ -1,12 +1,13 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System.Net.Http.Json;
+using NP.Lti13Platform.Core.Interfaces;
 
 namespace NP.Lti13Platform.Core.Models;
 
 /// <summary>
 /// Represents a JSON Web Key Set (JWKS).
 /// </summary>
-public abstract class Jwks
+public abstract class Jwks: IJwks
 {
     /// <summary>
     /// Create an instance of Jwks using the provided key or uri.

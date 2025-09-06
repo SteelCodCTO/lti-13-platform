@@ -1,16 +1,14 @@
-﻿using NP.Lti13Platform.Core.Interfaces;
-
-namespace NP.Lti13Platform.Core.Models;
+﻿namespace NP.Lti13Platform.Core.Interfaces;
 
 /// <summary>
 /// Represents the permissions for a user's personal data.
 /// </summary>
-public class UserPermissions: IUserPermissions
+public interface IUserPermissions
 {
     /// <summary>
     /// The unique identifier for the user whose permissions are being represented, as defined by the LTI 1.3 and OpenID Connect Core specifications.
     /// </summary>
-    public required string UserId { get; set; }
+    public string UserId { get; set; }
 
     /// <summary>
     /// Indicates whether the address claim is accessible as defined by the OpenID Connect Core specification.

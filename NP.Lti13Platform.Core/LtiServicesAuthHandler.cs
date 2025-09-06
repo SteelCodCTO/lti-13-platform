@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
+using NP.Lti13Platform.Core.Interfaces;
 using NP.Lti13Platform.Core.Services;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
@@ -17,7 +18,7 @@ namespace NP.Lti13Platform.Core;
 /// <param name="options">The authentication scheme options.</param>
 /// <param name="logger">The logger factory.</param>
 /// <param name="encoder">The URL encoder.</param>
-public class LtiServicesAuthHandler(ILti13CoreDataService dataService, ILti13TokenConfigService tokenService, IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger, UrlEncoder encoder)
+public class LtiServicesAuthHandler(ILti13CoreDataService<IAddress, IJwks> dataService, ILti13TokenConfigService tokenService, IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger, UrlEncoder encoder)
     : AuthenticationHandler<AuthenticationSchemeOptions>(options, logger, encoder)
 {
     /// <summary>

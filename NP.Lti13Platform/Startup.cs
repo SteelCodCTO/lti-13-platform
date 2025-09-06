@@ -4,6 +4,8 @@ using NP.Lti13Platform.AssignmentGradeServices;
 using NP.Lti13Platform.AssignmentGradeServices.Configs;
 using NP.Lti13Platform.Core;
 using NP.Lti13Platform.Core.Configs;
+using NP.Lti13Platform.Core.Interfaces;
+using NP.Lti13Platform.Core.Models;
 using NP.Lti13Platform.DeepLinking;
 using NP.Lti13Platform.DeepLinking.Configs;
 using NP.Lti13Platform.NameRoleProvisioningServices;
@@ -40,8 +42,11 @@ public static class Startup
     /// <param name="builder">The LTI 1.3 platform builder to configure.</param>
     /// <param name="serviceLifetime">The lifetime of the service to register.</param>
     /// <returns>The configured LTI 1.3 platform builder.</returns>
-    public static Lti13PlatformBuilder WithLti13DataService<T>(this Lti13PlatformBuilder builder, ServiceLifetime serviceLifetime = ServiceLifetime.Transient)
-        where T : ILti13DataService
+    public static Lti13PlatformBuilder WithLti13DataService<T, TAddress, TJwks>(this Lti13PlatformBuilder builder, ServiceLifetime serviceLifetime = ServiceLifetime.Transient)
+        where TAddress : IAddress
+        where TJwks : IJwks
+        //where T : ILti13DataService<TAddress, TJwks>
+        where T: ILti13DataService<TAddress, TJwks>
     {
         builder.WithLti13CoreDataService<T>(serviceLifetime)
             .WithLti13DeepLinkingDataService<T>(serviceLifetime)

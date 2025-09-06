@@ -1,6 +1,7 @@
-﻿using System.Text.Json.Serialization;
-using NP.Lti13Platform.Core.Constants;
+﻿using NP.Lti13Platform.Core.Constants;
+using NP.Lti13Platform.Core.Interfaces;
 using NP.Lti13Platform.Core.Services;
+using System.Text.Json.Serialization;
 
 namespace NP.Lti13Platform.Core.Populators;
 
@@ -25,7 +26,7 @@ public interface IRolesMessage
 /// <summary>
 /// Populates a roles message with information from the message scope.
 /// </summary>
-public class RolesPopulator(ILti13CoreDataService dataService) : Populator<IRolesMessage>
+public class RolesPopulator(ILti13CoreDataService<IAddress, IJwks> dataService) : Populator<IRolesMessage>
 {
     /// <summary>
     /// Populates a roles message with information from the message scope.
@@ -34,7 +35,7 @@ public class RolesPopulator(ILti13CoreDataService dataService) : Populator<IRole
     /// <param name="scope">The message scope containing the context and user information.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
-    public override async Task PopulateAsync(IRolesMessage obj, MessageScope scope, CancellationToken cancellationToken = default)
+    public override async Task PopulateAsync(IRolesMessage obj, MessageScope<IAddress, IJwks> scope, CancellationToken cancellationToken = default)
     {
         if (scope.Context != null)
         {

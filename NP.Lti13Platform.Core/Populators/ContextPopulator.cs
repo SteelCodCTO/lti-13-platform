@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using NP.Lti13Platform.Core.Interfaces;
+using System.Text.Json.Serialization;
 
 namespace NP.Lti13Platform.Core.Populators;
 
@@ -49,8 +50,9 @@ public interface IContextMessage
 /// </summary>
 public class ContextPopulator() : Populator<IContextMessage>
 {
-    /// <inheritdoc />
-    public override async Task PopulateAsync(IContextMessage obj, MessageScope scope, CancellationToken cancellationToken = default)
+    // Change the parameter type from MessageScope to MessageScope<IAddress, IJwks>
+    // You may need to adjust the generic arguments to match your actual types if they differ.
+    public override async Task PopulateAsync(IContextMessage obj, MessageScope<IAddress, IJwks> scope, CancellationToken cancellationToken = default)
     {
         if (scope.Context != null)
         {

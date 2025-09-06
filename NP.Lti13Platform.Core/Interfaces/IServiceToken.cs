@@ -1,24 +1,22 @@
-﻿using NP.Lti13Platform.Core.Interfaces;
-
-namespace NP.Lti13Platform.Core.Models;
+﻿namespace NP.Lti13Platform.Core.Interfaces;
 
 /// <summary>
 /// Represents a service token.
 /// </summary>
-public class ServiceToken: IServiceToken
+public interface IServiceToken
 {
     /// <summary>
     /// The unique identifier for the service token as defined by the LTI 1.3 specification.
     /// </summary>
-    public required string Id { get; set; }
+    public string Id { get; set; }
 
     /// <summary>
     /// The unique identifier for the tool associated with this service token as defined by the LTI 1.3 specification.
     /// </summary>
-    public required string ToolId { get; set; }
+    public string ToolId { get; set; }
 
     /// <summary>
     /// The expiration date and time of the service token as defined by the LTI 1.3 specification.
     /// </summary>
-    public required DateTime Expiration { get; set; }
+    public DateTime Expiration { get; set; }
 }
