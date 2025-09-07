@@ -6,9 +6,7 @@ namespace NP.Lti13Platform.Core.Services
     /// <summary>
     /// Defines the contract for a service that handles LTI 1.3 core data operations.
     /// </summary>
-    public interface ILti13CoreDataService<TAddress, TJwks>
-        where TAddress : IAddress
-        where TJwks : IJwks
+    public interface ILti13CoreDataService
     {
         /// <summary>
         /// Gets a tool by its client ID.
@@ -16,7 +14,14 @@ namespace NP.Lti13Platform.Core.Services
         /// <param name="clientId">The client ID.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The tool.</returns>
-        Task<ITool<TJwks>?> GetToolAsync(string clientId, CancellationToken cancellationToken = default);
+        Task<ITool?> GetToolAsync(string clientId, CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Gets a JWKS by its tool's client ID.
+        /// </summary>
+        /// <param name="clientId">The client ID.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The tool.</returns>
+        Task<IJwks?> GetJwksAsync(string clientId, CancellationToken cancellationToken = default);
         /// <summary>
         /// Gets a deployment by its ID.
         /// </summary>
@@ -37,7 +42,14 @@ namespace NP.Lti13Platform.Core.Services
         /// <param name="userId">The user ID.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The user.</returns>
-        Task<IUser<TAddress>?> GetUserAsync(string userId, CancellationToken cancellationToken = default);
+        Task<IUser?> GetUserAsync(string userId, CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Gets a user's physical address by their ID.
+        /// </summary>
+        /// <param name="userId">The user ID.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The user.</returns>
+        Task<IUserAddress?> GetUserAddressAsync(string userId, CancellationToken cancellationToken = default);
         /// <summary>
         /// Gets a membership by context and user IDs.
         /// </summary>

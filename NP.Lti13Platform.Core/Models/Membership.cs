@@ -1,9 +1,11 @@
-﻿namespace NP.Lti13Platform.Core.Models;
+﻿using NP.Lti13Platform.Core.Interfaces;
+
+namespace NP.Lti13Platform.Core.Models;
 
 /// <summary>
 /// Represents a membership in a context.
 /// </summary>
-public class Membership
+public class Membership: IMembership
 {
     /// <summary>
     /// The unique identifier of the context in which the membership exists, as defined by the LTI 1.3 specification.
@@ -31,17 +33,3 @@ public class Membership
     public required IEnumerable<string> MentoredUserIds { get; set; }
 }
 
-/// <summary>
-/// Represents the status of a membership.
-/// </summary>
-public enum MembershipStatus
-{
-    /// <summary>
-    /// The membership is active as defined by the LTI 1.3 specification.
-    /// </summary>
-    Active,
-    /// <summary>
-    /// The membership is inactive as defined by the LTI 1.3 specification.
-    /// </summary>
-    Inactive
-}

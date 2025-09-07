@@ -1,9 +1,11 @@
-﻿namespace NP.Lti13Platform.Core.Models;
+﻿using NP.Lti13Platform.Core.Interfaces;
+
+namespace NP.Lti13Platform.Core.Models;
 
 /// <summary>
 /// Represents custom permissions for LTI claims.
 /// </summary>
-public class CustomPermissions
+public class CustomPermissions: ICustomPermissions
 {
     /// <summary>
     /// Indicates whether the user ID is accessible as defined by the LTI 1.3 specification.

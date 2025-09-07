@@ -1,4 +1,5 @@
 ﻿using NP.Lti13Platform.Core;
+using NP.Lti13Platform.Core.Interfaces;
 using NP.Lti13Platform.Core.Models;
 using NP.Lti13Platform.Core.Services;
 using System.Text;
@@ -27,7 +28,7 @@ public static class ServiceExtensions
     /// <returns>A task that represents the asynchronous operation. The task result contains the deep link initiation URL.</returns>
     public static async Task<Uri> GetDeepLinkInitiationUrlAsync(
         this IUrlServiceHelper service,
-        Tool tool,
+        ITool tool,
         string deploymentId,
         string userId,
         bool isAnonymous,

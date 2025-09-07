@@ -1,10 +1,12 @@
-﻿namespace NP.Lti13Platform.Core.Models;
+﻿using NP.Lti13Platform.Core.Interfaces;
+
+namespace NP.Lti13Platform.Core.Models;
 
 /// <summary>
 /// Represents a line item in the gradebook as defined in the LTI 1.3 Assignment and Grade Services specification.
 /// A line item represents a column in a gradebook that can be used for reporting scores or grades.
 /// </summary>
-public class LineItem
+public class LineItem: ILineItem
 {
     /// <summary>
     /// Gets or sets the ID of the line item.
@@ -77,4 +79,27 @@ public class LineItem
     /// Date and time when the line item is no longer available for submission (i.e., the due date).
     /// </summary>
     public DateTime? EndDateTime { get; set; }
+
+
+    /// <summary>
+    /// Creates a strongly-typed clone of the given ILineItem instance.
+    /// </summary>
+    public static LineItem Clone(ILineItem li)
+    {
+        return new LineItem
+        {
+            Id = li.Id,
+            DeploymentId = li.DeploymentId,
+            ContextId = li.ContextId,
+            ScoreMaximum = li.ScoreMaximum,
+            Label = li.Label,
+            ResourceLinkId = li.ResourceLinkId,
+            ResourceId = li.ResourceId,
+            Tag = li.Tag,
+            GradesReleased = li.GradesReleased,
+            GradesReleasedDateTime = li.GradesReleasedDateTime,
+            StartDateTime = li.StartDateTime,
+            EndDateTime = li.EndDateTime
+        };
+    }
 }

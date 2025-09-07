@@ -1,11 +1,13 @@
-﻿namespace NP.Lti13Platform.Core.Models;
+﻿using NP.Lti13Platform.Core.Interfaces;
+
+namespace NP.Lti13Platform.Core.Models;
 
 /// <summary>
 /// Represents the context of an LTI platform as defined in the LTI 1.3 specification.
 /// A context is a mapping to a group or collection of users in the tool consumer system, 
 /// typically a course/class, project or other grouping of users.
 /// </summary>
-public class Context
+public class Context: IContext
 {
     /// <summary>
     /// Gets or sets the unique identifier for the context.

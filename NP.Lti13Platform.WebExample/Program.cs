@@ -71,6 +71,7 @@ namespace NP.Lti13Platform.WebExample
     using Microsoft.IdentityModel.Tokens;
     using NP.Lti13Platform.AssignmentGradeServices.Services;
     using NP.Lti13Platform.Core.Constants;
+    using NP.Lti13Platform.Core.Interfaces;
     using NP.Lti13Platform.Core.Models;
     using NP.Lti13Platform.Core.Services;
     using NP.Lti13Platform.DeepLinking.Models;
@@ -162,7 +163,16 @@ namespace NP.Lti13Platform.WebExample
 
             Users.Add(new User
             {
-                Id = "userId"
+                Id = "userId",
+                Address = new UserAddress()
+                {
+                    Country = "US",
+                    Locality = "Redmond",
+                    Region = "WA",
+                    PostalCode = "98052",
+                    StreetAddress = "1 Microsoft Way"
+                }
+
             });
 
             Memberships.Add(new Membership
@@ -175,43 +185,53 @@ namespace NP.Lti13Platform.WebExample
             });
         }
 
-        Task<Tool?> ILti13CoreDataService.GetToolAsync(string clientId, CancellationToken cancellationToken)
+        Task<ITool?> ILti13CoreDataService.GetToolAsync(string clientId, CancellationToken cancellationToken)
         {
-            return Task.FromResult(Tools.SingleOrDefault(t => t.ClientId == clientId));
+            return Task.FromResult<ITool?>(Tools.SingleOrDefault(t => t.ClientId == clientId));
         }
 
-        Task<Deployment?> ILti13CoreDataService.GetDeploymentAsync(string deploymentId, CancellationToken cancellationToken)
+        Task<IJwks?> ILti13CoreDataService.GetJwksAsync(string clientId, CancellationToken cancellationToken)
         {
-            return Task.FromResult(Deployments.SingleOrDefault(d => d.Id == deploymentId));
+            return Task.FromResult<IJwks?>(Tools.SingleOrDefault(t => t.ClientId == clientId)?.Jwks);
         }
 
-        Task<Context?> ILti13CoreDataService.GetContextAsync(string contextId, CancellationToken cancellationToken)
+        Task<IDeployment?> ILti13CoreDataService.GetDeploymentAsync(string deploymentId, CancellationToken cancellationToken)
         {
-            return Task.FromResult(Contexts.SingleOrDefault(c => c.Id == contextId));
+            return Task.FromResult<IDeployment?>(Deployments.SingleOrDefault(d => d.Id == deploymentId));
         }
 
-        Task<User?> ILti13CoreDataService.GetUserAsync(string userId, CancellationToken cancellationToken)
+        Task<IContext?> ILti13CoreDataService.GetContextAsync(string contextId, CancellationToken cancellationToken)
         {
-            return Task.FromResult(Users.SingleOrDefault(u => u.Id == userId));
+            return Task.FromResult<IContext?>(Contexts.SingleOrDefault(c => c.Id == contextId));
         }
 
-        Task<Membership?> ILti13CoreDataService.GetMembershipAsync(string contextId, string userId, CancellationToken cancellationToken)
+        Task<IUser?> ILti13CoreDataService.GetUserAsync(string userId, CancellationToken cancellationToken)
         {
-            return Task.FromResult(Memberships.SingleOrDefault(m => m.ContextId == contextId && m.UserId == userId));
+            return Task.FromResult<IUser?>(Users.SingleOrDefault(u => u.Id == userId));
         }
 
-        Task<ResourceLink?> ILti13CoreDataService.GetResourceLinkAsync(string resourceLinkId, CancellationToken cancellationToken)
+        Task<IUserAddress?> ILti13CoreDataService.GetUserAddressAsync(string userId, CancellationToken cancellationToken)
         {
-            return Task.FromResult(ResourceLinks.SingleOrDefault(r => r.Id == resourceLinkId));
+            return Task.FromResult<IUserAddress?>(Users.SingleOrDefault(u => u.Id == userId)?.Address);
         }
 
-        Task<PartialList<LineItem>> ILti13CoreDataService.GetLineItemsAsync(string deploymentId, string contextId, int pageIndex, int limit, string? resourceId, string? resourceLinkId, string? tag, CancellationToken cancellationToken)
+        Task<IMembership?> ILti13CoreDataService.GetMembershipAsync(string contextId, string userId, CancellationToken cancellationToken)
+        {
+            return Task.FromResult<IMembership?>(Memberships.SingleOrDefault(m => m.ContextId == contextId && m.UserId == userId));
+        }
+
+        Task<IResourceLink?> ILti13CoreDataService.GetResourceLinkAsync(string resourceLinkId, CancellationToken cancellationToken)
+        {
+            return Task.FromResult<IResourceLink?>(ResourceLinks.SingleOrDefault(r => r.Id == resourceLinkId));
+        }
+
+        Task<IPartialList<ILineItem>> ILti13CoreDataService.GetLineItemsAsync(string deploymentId, string contextId, int pageIndex, int limit, string? resourceId, string? resourceLinkId, string? tag, CancellationToken cancellationToken)
         {
             var lineItems = LineItems.Where(li => li.DeploymentId == deploymentId && li.ContextId == contextId && (resourceId == null || li.ResourceId == resourceId) && (resourceLinkId == null || li.ResourceLinkId == resourceLinkId) && (tag == null || li.Tag == tag)).ToList();
 
-            return Task.FromResult(new PartialList<LineItem>
+            return Task.FromResult<IPartialList<ILineItem>>(new PartialList<ILineItem>
             {
-                Items = [.. lineItems.Skip(pageIndex * limit).Take(limit)],
+                Items = [.. lineItems.Skip(pageIndex * limit).Take(limit) ],
                 TotalItems = lineItems.Count
             });
         }
@@ -223,73 +243,75 @@ namespace NP.Lti13Platform.WebExample
         /// <param name="lineItem">The line item to save.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The ID of the saved line item.</returns>
-        public Task<string> SaveLineItemAsync(LineItem lineItem, CancellationToken cancellationToken = default)
+        public Task<string> SaveLineItemAsync(ILineItem lineItem, CancellationToken cancellationToken = default)
         {
+            if (lineItem == null) throw new ArgumentNullException(nameof(lineItem));
+
             var existingLineItem = LineItems.SingleOrDefault(x => x.Id == lineItem.Id);
             if (existingLineItem != null)
             {
-                LineItems[LineItems.IndexOf(existingLineItem)] = lineItem;
+                LineItems[LineItems.IndexOf(existingLineItem)] = LineItem.Clone(lineItem);
                 return Task.FromResult(lineItem.Id);
             }
             else
             {
                 lineItem.Id = Guid.NewGuid().ToString();
-                LineItems.Add(lineItem);
+                LineItems.Add(LineItem.Clone(lineItem));
                 return Task.FromResult(lineItem.Id);
             }
         }
 
-        async Task<Attempt?> ILti13CoreDataService.GetAttemptAsync(string resourceLinkId, string userId, CancellationToken cancellationToken)
+        async Task<IAttempt?> ILti13CoreDataService.GetAttemptAsync(string resourceLinkId, string userId, CancellationToken cancellationToken)
         {
-            return await Task.FromResult(Attempts.SingleOrDefault(a => a.ResourceLinkId == resourceLinkId && a.UserId == userId));
+            return await Task.FromResult<IAttempt?>(Attempts.SingleOrDefault(a => a.ResourceLinkId == resourceLinkId && a.UserId == userId));
         }
 
-        Task<PartialList<Grade>> ILti13AssignmentGradeDataService.GetGradesAsync(string lineItemId, int pageIndex, int limit, string? userId, CancellationToken cancellationToken)
+        Task<IPartialList<IGrade>> ILti13AssignmentGradeDataService.GetGradesAsync(string lineItemId, int pageIndex, int limit, string? userId, CancellationToken cancellationToken)
         {
             var grades = Grades.Where(x => x.LineItemId == lineItemId && (userId == null || x.UserId == userId)).ToList();
 
-            return Task.FromResult(new PartialList<Grade>
+            return Task.FromResult<IPartialList<IGrade>>(new PartialList<IGrade>
             {
                 Items = [.. grades.Skip(pageIndex * limit).Take(limit)],
                 TotalItems = grades.Count
             });
         }
 
-        Task<Grade?> ILti13CoreDataService.GetGradeAsync(string lineItemId, string userId, CancellationToken cancellationToken)
+        Task<IGrade?> ILti13CoreDataService.GetGradeAsync(string lineItemId, string userId, CancellationToken cancellationToken)
         {
-            return Task.FromResult(Grades.SingleOrDefault(g => g.LineItemId == lineItemId && g.UserId == userId));
+            return Task.FromResult<IGrade?>(Grades.SingleOrDefault(g => g.LineItemId == lineItemId && g.UserId == userId));
         }
 
-        Task ILti13AssignmentGradeDataService.SaveGradeAsync(Grade grade, CancellationToken cancellationToken)
+        Task ILti13AssignmentGradeDataService.SaveGradeAsync(IGrade grade, CancellationToken cancellationToken)
         {
             var existingGrade = Grades.SingleOrDefault(x => x.LineItemId == grade.LineItemId && x.UserId == grade.UserId);
             if (existingGrade != null)
             {
-                Grades[Grades.IndexOf(existingGrade)] = grade;
+                Grades[Grades.IndexOf(existingGrade)] = Grade.Clone(grade);
             }
             else
             {
-                Grades.Add(grade);
+                Grades.Add(Grade.Clone(grade));
             }
 
             return Task.CompletedTask;
         }
 
-        Task<ServiceToken?> ILti13CoreDataService.GetServiceTokenAsync(string toolId, string serviceTokenId, CancellationToken cancellationToken)
+        Task<IServiceToken?> ILti13CoreDataService.GetServiceTokenAsync(string toolId, string serviceTokenId, CancellationToken cancellationToken)
         {
-            return Task.FromResult(ServiceTokens.FirstOrDefault(x => x.ToolId == toolId && x.Id == serviceTokenId));
+            return Task.FromResult<IServiceToken?>(ServiceTokens.FirstOrDefault(x => x.ToolId == toolId && x.Id == serviceTokenId));
         }
 
-        Task ILti13CoreDataService.SaveServiceTokenAsync(ServiceToken serviceToken, CancellationToken cancellationToken)
+        Task ILti13CoreDataService.SaveServiceTokenAsync(IServiceToken serviceToken, CancellationToken cancellationToken)
         {
             var existing = ServiceTokens.SingleOrDefault(x => x.ToolId == serviceToken.ToolId && x.Id == serviceToken.Id);
             if (existing != null)
             {
-                ServiceTokens[ServiceTokens.IndexOf(existing)] = serviceToken;
+                ServiceTokens[ServiceTokens.IndexOf(existing)] = ServiceToken.Clone(serviceToken);
             }
             else
             {
-                ServiceTokens.Add(serviceToken);
+                ServiceTokens.Add(ServiceToken.Clone(serviceToken));
             }
 
             return Task.CompletedTask;
@@ -325,21 +347,24 @@ namespace NP.Lti13Platform.WebExample
 
 
 
-        Task<PartialList<(Membership, User)>> ILti13NameRoleProvisioningDataService.GetMembershipsAsync(string deploymentId, string contextId, int pageIndex, int limit, string? role, string? resourceLinkId, DateTime? asOfDate, CancellationToken cancellationToken)
+        Task<IPartialList<(IMembership, IUser)>> ILti13NameRoleProvisioningDataService.GetMembershipsAsync(string deploymentId, string contextId, int pageIndex, int limit, string? role, string? resourceLinkId, DateTime? asOfDate, CancellationToken cancellationToken)
         {
             if (ResourceLinks.Any(x => x.ContextId == contextId && x.DeploymentId == deploymentId && (resourceLinkId == null || resourceLinkId == x.Id)))
             {
                 var memberships = Memberships.Where(m => m.ContextId == contextId && (role == null || m.Roles.Contains(role))).ToList();
                 var users = Users.Where(u => memberships.Select(m => m.UserId).Contains(u.Id)).ToList();
 
-                return Task.FromResult(new PartialList<(Membership, User)>
+                return Task.FromResult<IPartialList<(IMembership, IUser)>>(new PartialList<(IMembership, IUser)>
                 {
-                    Items = memberships.Join(users, m => m.UserId, u => u.Id, (m, u) => (m, u)).Skip(pageIndex * limit).Take(limit).ToList(),
+                    Items = memberships.Join(users, m => m.UserId, u => u.Id, (m, u) => (m, u)).Skip(pageIndex * limit).Take(limit).Select(a =>
+                    {
+                        return (m: (IMembership)a.m, u: (IUser)a.u);
+                    }).ToList(),
                     TotalItems = memberships.Count
                 });
             }
 
-            return Task.FromResult(PartialList<(Membership, User)>.Empty);
+            return Task.FromResult<IPartialList<(IMembership, IUser)>>(PartialList<(IMembership, IUser)>.Empty);
         }
 
         Task<string> ILti13DeepLinkingDataService.SaveContentItemAsync(string deploymentId, string? contextId, ContentItem contentItem, CancellationToken cancellationToken)
@@ -370,9 +395,9 @@ namespace NP.Lti13Platform.WebExample
 
 
 
-        Task<LineItem?> ILti13AssignmentGradeDataService.GetLineItemAsync(string lineItemId, CancellationToken cancellationToken)
+        Task<ILineItem?> ILti13AssignmentGradeDataService.GetLineItemAsync(string lineItemId, CancellationToken cancellationToken)
         {
-            return Task.FromResult(LineItems.SingleOrDefault(x => x.Id == lineItemId));
+            return Task.FromResult<ILineItem?>(LineItems.SingleOrDefault(x => x.Id == lineItemId));
         }
 
         Task ILti13AssignmentGradeDataService.DeleteLineItemAsync(string lineItemId, CancellationToken cancellationToken)
@@ -382,9 +407,9 @@ namespace NP.Lti13Platform.WebExample
             return Task.CompletedTask;
         }
 
-        Task<CustomPermissions> ILti13CoreDataService.GetCustomPermissions(string deploymentId, string? contextId, string userId, string? actualUserId, CancellationToken cancellationToken)
+        Task<ICustomPermissions> ILti13CoreDataService.GetCustomPermissions(string deploymentId, string? contextId, string userId, string? actualUserId, CancellationToken cancellationToken)
         {
-            return Task.FromResult(new CustomPermissions { UserId = true, UserUsername = true });
+            return Task.FromResult<ICustomPermissions>(new CustomPermissions { UserId = true, UserUsername = true });
         }
 
         /// <summary>
@@ -395,9 +420,9 @@ namespace NP.Lti13Platform.WebExample
         /// <param name="userId">The user ID.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The user's permissions.</returns>
-        public Task<UserPermissions> GetUserPermissionsAsync(string deploymentId, string? contextId, string userId, CancellationToken cancellationToken = default)
+        public Task<IUserPermissions> GetUserPermissionsAsync(string deploymentId, string? contextId, string userId, CancellationToken cancellationToken = default)
         {
-            return Task.FromResult(new UserPermissions { UserId = userId, FamilyName = true, Name = true, GivenName = true });
+            return Task.FromResult<IUserPermissions>(new UserPermissions { UserId = userId, FamilyName = true, Name = true, GivenName = true });
         }
 
         /// <summary>
@@ -408,9 +433,9 @@ namespace NP.Lti13Platform.WebExample
         /// <param name="userIds">The user IDs.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A collection of user permissions.</returns>
-        public Task<IEnumerable<UserPermissions>> GetUserPermissionsAsync(string deploymentId, string? contextId, IEnumerable<string> userIds, CancellationToken cancellationToken = default)
+        public Task<IEnumerable<IUserPermissions>> GetUserPermissionsAsync(string deploymentId, string? contextId, IEnumerable<string> userIds, CancellationToken cancellationToken = default)
         {
-            return Task.FromResult(userIds.Select(x => new UserPermissions { UserId = x, FamilyName = true, Name = true, GivenName = true }));
+            return Task.FromResult<IEnumerable<IUserPermissions>>(userIds.Select(x => new UserPermissions { UserId = x, FamilyName = true, Name = true, GivenName = true }));
         }
     }
 }

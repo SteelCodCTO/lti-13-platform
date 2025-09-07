@@ -23,7 +23,7 @@ public interface ICustomMessage
 /// </summary>
 /// <param name="platformService">The platform service.</param>
 /// <param name="dataService">The core data service.</param>
-public class CustomPopulator(ILti13PlatformService platformService, ILti13CoreDataService<IAddress, IJwks> dataService) : Populator<ICustomMessage>
+public class CustomPopulator(ILti13PlatformService platformService, ILti13CoreDataService dataService) : Populator<ICustomMessage>
 {
     private static readonly IEnumerable<string> LineItemAttemptGradeVariables = [
         Lti13ResourceLinkVariables.AvailableUserStartDateTime,
@@ -34,7 +34,7 @@ public class CustomPopulator(ILti13PlatformService platformService, ILti13CoreDa
         Lti13ResourceLinkVariables.LineItemUserReleaseDateTime];
 
     /// <inheritdoc />
-    public override async Task PopulateAsync(ICustomMessage obj, MessageScope<IAddress, IJwks> scope, CancellationToken cancellationToken = default)
+    public override async Task PopulateAsync(ICustomMessage obj, MessageScope scope, CancellationToken cancellationToken = default)
     {
         var customDictionary = scope.Tool.Custom.Merge(scope.Deployment.Custom).Merge(scope.ResourceLink?.Custom);
 

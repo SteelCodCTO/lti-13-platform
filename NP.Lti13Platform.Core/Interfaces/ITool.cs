@@ -5,7 +5,7 @@
 /// A tool (also referred to as an LTI tool or tool provider) is an external application that can be 
 /// integrated with a learning platform using the LTI protocol.
 /// </summary>
-public interface ITool<TJwks> where TJwks : IJwks
+public interface ITool
 {
     /// <summary>
     /// Gets or sets the unique identifier for the tool.
@@ -43,11 +43,11 @@ public interface ITool<TJwks> where TJwks : IJwks
     /// </summary>
     public IEnumerable<Uri> RedirectUrls => [DeepLinkUrl, LaunchUrl];
 
-    /// <summary>
-    /// Gets or sets the JSON Web Key Set (JWKS) for the tool.
-    /// The cryptographic keys that the tool uses to sign messages. The platform uses these keys to verify the signature of messages from the tool.
-    /// </summary>
-    public TJwks? Jwks { get; set; }
+    ///// <summary>
+    ///// Gets or sets the JSON Web Key Set (JWKS) for the tool.
+    ///// The cryptographic keys that the tool uses to sign messages. The platform uses these keys to verify the signature of messages from the tool.
+    ///// </summary>
+    //public TJwks? Jwks { get; set; }
 
     /// <summary>
     /// Gets or sets the custom parameters for the tool.

@@ -4,7 +4,7 @@
 /// Represents a user in the LTI 1.3 platform with standard identity attributes.
 /// This class follows the OpenID Connect Core specification for user information.
 /// </summary>
-public interface IUser<TAddress> where TAddress : IAddress
+public interface IUser
 {
     /// <summary>
     /// Gets or sets the unique identifier for the user.
@@ -102,10 +102,10 @@ public interface IUser<TAddress> where TAddress : IAddress
     /// </summary>
     public DateTime? UpdatedAt { get; set; }
 
-    /// <summary>
-    /// User's preferred postal address.
-    /// </summary>
-    public TAddress? Address { get; set; }
+    ///// <summary>
+    ///// User's preferred postal address.
+    ///// </summary>
+    //public TAddress? Address { get; set; }
 
     /// <summary>
     /// Username (typically, the name a user logs in with).
@@ -123,38 +123,4 @@ public interface IUser<TAddress> where TAddress : IAddress
     public IEnumerable<string> OneRosterGrades { get; set; }
 }
 
-/// <summary>
-/// Represents a physical address following the OpenID Connect Core specification.
-/// </summary>
-public interface IAddress
-{
-    /// <summary>
-    /// Full mailing address, formatted for display or use on a mailing label. This field MAY contain multiple lines, separated by newlines. Newlines can be represented either as a carriage return/line feed pair ("\r\n") or as a single line feed character ("\n").
-    /// </summary>
-    public string? Formatted { get; set; }
 
-    /// <summary>
-    /// Full street address component, which MAY include house number, street name, Post Office Box, and multi-line extended street address information. This field MAY contain multiple lines, separated by newlines. Newlines can be represented either as a carriage return/line feed pair ("\r\n") or as a single line feed character ("\n").
-    /// </summary>
-    public string? StreetAddress { get; set; }
-
-    /// <summary>
-    /// City or locality component.
-    /// </summary>
-    public string? Locality { get; set; }
-
-    /// <summary>
-    /// State, province, prefecture, or region component.
-    /// </summary>
-    public string? Region { get; set; }
-
-    /// <summary>
-    /// Zip code or postal code component.
-    /// </summary>
-    public string? PostalCode { get; set; }
-
-    /// <summary>
-    /// Country name component.
-    /// </summary>
-    public string? Country { get; set; }
-}

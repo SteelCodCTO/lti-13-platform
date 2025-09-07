@@ -1,10 +1,12 @@
-﻿namespace NP.Lti13Platform.Core.Models;
+﻿using NP.Lti13Platform.Core.Interfaces;
+
+namespace NP.Lti13Platform.Core.Models;
 
 /// <summary>
 /// Represents a grade associated with a line item and user as defined in the LTI 1.3 Assignment and Grade Services specification.
 /// A grade represents a score or evaluation result for a student on a specific line item.
 /// </summary>
-public class Grade
+public class Grade: IGrade
 {
     /// <summary>
     /// Gets or sets the identifier of the line item.
@@ -66,78 +68,29 @@ public class Grade
     /// When the user submitted their work for the activity associated with this grade.
     /// </summary>
     public DateTime? SubmittedAt { get; set; }
+
+    /// <summary>
+    /// Creates a strongly-typed clone of the given IGrade instance.
+    /// </summary>
+    public static Grade Clone(IGrade li)
+    {
+        return new Grade
+        {
+            LineItemId = li.LineItemId,
+            UserId = li.UserId,
+            ScoringUserId = li.ScoringUserId,
+            ResultScore = li.ResultScore,
+            ResultMaximum = li.ResultMaximum,
+            Comment = li.Comment,
+            Timestamp = li.Timestamp,
+            ReleaseDateTime = li.ReleaseDateTime,
+            ActivityProgress = li.ActivityProgress,
+            GradingProgress = li.GradingProgress,
+            StartedAt = li.StartedAt,
+            SubmittedAt = li.SubmittedAt
+
+        };
+    }
+
 }
 
-/// <summary>
-/// Represents the progress of an activity as defined in the LTI 1.3 Assignment and Grade Services specification.
-/// This enumeration indicates the current state of a learner's activity.
-/// </summary>
-public enum ActivityProgress
-{
-    /// <summary>
-    /// The activity has been initialized but not started.
-    /// The tool consumer has created the activity but the user has not interacted with it yet.
-    /// </summary>
-    Initialized,
-
-    /// <summary>
-    /// The activity has been started.
-    /// The user has begun the activity but has not yet completed a significant amount of work.
-    /// </summary>
-    Started,
-
-    /// <summary>
-    /// The activity is in progress.
-    /// The user is actively working on the activity and has completed some portion of it.
-    /// </summary>
-    InProgress,
-
-    /// <summary>
-    /// The activity has been submitted.
-    /// The user has submitted their work for the activity but it may not yet be considered complete.
-    /// </summary>
-    Submitted,
-
-    /// <summary>
-    /// The activity has been completed.
-    /// The user has finished all required work for the activity.
-    /// </summary>
-    Completed
-}
-
-/// <summary>
-/// Represents the progress of grading as defined in the LTI 1.3 Assignment and Grade Services specification.
-/// This enumeration indicates the current state of the grading process.
-/// </summary>
-public enum GradingProgress
-{
-    /// <summary>
-    /// The grading is fully completed.
-    /// The submitted activity has been fully graded and the score represents the final value.
-    /// </summary>
-    FullyGraded,
-
-    /// <summary>
-    /// The grading is pending.
-    /// The grading process has not yet begun.
-    /// </summary>
-    Pending,
-
-    /// <summary>
-    /// The grading is pending manual intervention.
-    /// The grading process has been partially completed and requires manual review or intervention.
-    /// </summary>
-    PendingManual,
-
-    /// <summary>
-    /// The grading has failed.
-    /// An error occurred during the grading process.
-    /// </summary>
-    Failed,
-
-    /// <summary>
-    /// The grading is not ready.
-    /// The activity cannot be graded at this time, possibly because it is not yet complete.
-    /// </summary>
-    NotReady
-}

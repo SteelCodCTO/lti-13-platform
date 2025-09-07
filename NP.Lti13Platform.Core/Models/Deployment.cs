@@ -1,9 +1,11 @@
-﻿namespace NP.Lti13Platform.Core.Models;
+﻿using NP.Lti13Platform.Core.Interfaces;
+
+namespace NP.Lti13Platform.Core.Models;
 
 /// <summary>
 /// Represents an LTI deployment.
 /// </summary>
-public class Deployment
+public class Deployment: IDeployment
 {
     /// <summary>
     /// The unique identifier for the deployment as assigned by the platform. This value is used to identify the platform-tool integration governing the message.

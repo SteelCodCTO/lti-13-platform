@@ -113,7 +113,8 @@ public static class Startup
                 var clientId = jwt.Issuer;
 
                 var tool = await coreDataService.GetToolAsync(clientId, cancellationToken);
-                if (tool?.Jwks == null)
+                var jwks = await coreDataService.GetJwksAsync(clientId, cancellationToken);
+                if (jwks == null)
                 {
                     return Results.NotFound(new { Error = "invalid_client", Error_Description = "client_id is required", Error_Uri = DEEP_LINKING_SPEC });
                 }
@@ -133,7 +134,7 @@ public static class Startup
 
                 var validatedToken = await new JsonWebTokenHandler().ValidateTokenAsync(request.Jwt, new TokenValidationParameters
                 {
-                    IssuerSigningKeys = await tool.Jwks.GetKeysAsync(cancellationToken),
+                    IssuerSigningKeys = await jwks.GetKeysAsync(cancellationToken),
                     ValidAudience = tokenConfig.Issuer,
                     ValidIssuer = tool.ClientId.ToString()
                 });

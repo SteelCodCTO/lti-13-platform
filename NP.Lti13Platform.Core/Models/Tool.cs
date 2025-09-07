@@ -7,7 +7,7 @@ namespace NP.Lti13Platform.Core.Models;
 /// A tool (also referred to as an LTI tool or tool provider) is an external application that can be 
 /// integrated with a learning platform using the LTI protocol.
 /// </summary>
-public class Tool: ITool<Jwks>
+public class Tool: ITool
 {
     /// <summary>
     /// Gets or sets the unique identifier for the tool.

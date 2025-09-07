@@ -52,7 +52,7 @@ public class ContextPopulator() : Populator<IContextMessage>
 {
     // Change the parameter type from MessageScope to MessageScope<IAddress, IJwks>
     // You may need to adjust the generic arguments to match your actual types if they differ.
-    public override async Task PopulateAsync(IContextMessage obj, MessageScope<IAddress, IJwks> scope, CancellationToken cancellationToken = default)
+    public override async Task PopulateAsync(IContextMessage obj, MessageScope scope, CancellationToken cancellationToken = default)
     {
         if (scope.Context != null)
         {

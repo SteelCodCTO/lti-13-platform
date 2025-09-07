@@ -1,4 +1,5 @@
-﻿using NP.Lti13Platform.Core.Models;
+﻿using NP.Lti13Platform.Core.Interfaces;
+using NP.Lti13Platform.Core.Models;
 
 namespace NP.Lti13Platform.NameRoleProvisioningServices.Services;
 
@@ -19,7 +20,7 @@ public interface ILti13NameRoleProvisioningDataService
     /// <param name="asOfDate">Optional. Return memberships as of a specific date.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains a partial list of membership and user tuples.</returns>
-    Task<PartialList<(Membership Membership, User User)>> GetMembershipsAsync(string deploymentId, string contextId, int pageIndex, int limit, string? role, string? resourceLinkId, DateTime? asOfDate = null, CancellationToken cancellationToken = default);
+    Task<IPartialList<(IMembership Membership, IUser User)>> GetMembershipsAsync(string deploymentId, string contextId, int pageIndex, int limit, string? role, string? resourceLinkId, DateTime? asOfDate = null, CancellationToken cancellationToken = default);
     
     /// <summary>
     /// Gets user permissions for a list of users in a context.
@@ -29,5 +30,5 @@ public interface ILti13NameRoleProvisioningDataService
     /// <param name="userIds">The user identifiers to get permissions for.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains a collection of user permissions.</returns>
-    Task<IEnumerable<UserPermissions>> GetUserPermissionsAsync(string deploymentId, string? contextId, IEnumerable<string> userIds, CancellationToken cancellationToken = default);
+    Task<IEnumerable<IUserPermissions>> GetUserPermissionsAsync(string deploymentId, string? contextId, IEnumerable<string> userIds, CancellationToken cancellationToken = default);
 }

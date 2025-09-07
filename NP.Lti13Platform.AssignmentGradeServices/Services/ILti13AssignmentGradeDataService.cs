@@ -1,4 +1,5 @@
-﻿using NP.Lti13Platform.Core.Models;
+﻿using NP.Lti13Platform.Core.Interfaces;
+using NP.Lti13Platform.Core.Models;
 
 namespace NP.Lti13Platform.AssignmentGradeServices.Services
 {
@@ -13,7 +14,7 @@ namespace NP.Lti13Platform.AssignmentGradeServices.Services
         /// <param name="lineItemId">The identifier of the line item to retrieve.</param>
         /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the line item if found; otherwise, null.</returns>
-        Task<LineItem?> GetLineItemAsync(string lineItemId, CancellationToken cancellationToken = default);
+        Task<ILineItem?> GetLineItemAsync(string lineItemId, CancellationToken cancellationToken = default);
         
         /// <summary>
         /// Deletes a line item by its identifier.
@@ -29,7 +30,7 @@ namespace NP.Lti13Platform.AssignmentGradeServices.Services
         /// <param name="lineItem">The line item to save.</param>
         /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the identifier of the saved line item.</returns>
-        Task<string> SaveLineItemAsync(LineItem lineItem, CancellationToken cancellationToken = default);
+        Task<string> SaveLineItemAsync(ILineItem lineItem, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Retrieves grades for a specified line item.
@@ -40,7 +41,7 @@ namespace NP.Lti13Platform.AssignmentGradeServices.Services
         /// <param name="userId">Optional. The identifier of a specific user to retrieve grades for.</param>
         /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a partial list of grades.</returns>
-        Task<PartialList<Grade>> GetGradesAsync(string lineItemId, int pageIndex, int limit, string? userId = null, CancellationToken cancellationToken = default);
+        Task<IPartialList<IGrade>> GetGradesAsync(string lineItemId, int pageIndex, int limit, string? userId = null, CancellationToken cancellationToken = default);
         
         /// <summary>
         /// Saves a grade to the data store.
@@ -48,6 +49,6 @@ namespace NP.Lti13Platform.AssignmentGradeServices.Services
         /// <param name="result">The grade to save.</param>
         /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
-        Task SaveGradeAsync(Grade result, CancellationToken cancellationToken = default);
+        Task SaveGradeAsync(IGrade result, CancellationToken cancellationToken = default);
     }
 }

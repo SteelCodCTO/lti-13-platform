@@ -1,10 +1,12 @@
-﻿namespace NP.Lti13Platform.Core.Models;
+﻿using NP.Lti13Platform.Core.Interfaces;
+
+namespace NP.Lti13Platform.Core.Models;
 
 /// <summary>
 /// Represents an LTI resource link as defined in the LTI 1.3 specification.
 /// A resource link is a unique reference to a resource, from within a context in the tool consumer.
 /// </summary>
-public class ResourceLink
+public class ResourceLink: IResourceLink
 {
     /// <summary>
     /// Gets or sets the ID of the resource link.

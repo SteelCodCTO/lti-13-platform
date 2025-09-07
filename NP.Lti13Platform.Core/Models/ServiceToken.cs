@@ -21,4 +21,19 @@ public class ServiceToken: IServiceToken
     /// The expiration date and time of the service token as defined by the LTI 1.3 specification.
     /// </summary>
     public required DateTime Expiration { get; set; }
+
+
+    /// <summary>
+    /// Creates a strongly-typed clone of the given IGrade instance.
+    /// </summary>
+    public static ServiceToken Clone(IServiceToken li)
+    {
+        return new ServiceToken
+        {
+            Id = li.Id,
+            ToolId = li.ToolId,
+            Expiration = li.Expiration
+        };
+    }
+
 }

@@ -71,7 +71,7 @@ public interface IPlatformMessage
 public class PlatformPopulator(ILti13PlatformService platformService) : Populator<IPlatformMessage>
 {
     /// <inheritdoc />
-    public override async Task PopulateAsync(IPlatformMessage obj, MessageScope<IAddress, IJwks> scope, CancellationToken cancellationToken = default)
+    public override async Task PopulateAsync(IPlatformMessage obj, MessageScope scope, CancellationToken cancellationToken = default)
     {
         var platform = await platformService.GetPlatformAsync(scope.Tool.ClientId, cancellationToken);
 

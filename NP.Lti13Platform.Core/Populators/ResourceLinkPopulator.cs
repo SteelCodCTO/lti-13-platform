@@ -72,7 +72,7 @@ public class ResourceLinkPopulator() : Populator<IResourceLinkMessage>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
     /// <exception cref="ArgumentNullException">Thrown when the resource link in the scope is null.</exception>
-    public override async Task PopulateAsync(IResourceLinkMessage obj, MessageScope<IAddress, IJwks> scope, CancellationToken cancellationToken = default)
+    public override async Task PopulateAsync(IResourceLinkMessage obj, MessageScope scope, CancellationToken cancellationToken = default)
     {
         if (scope.ResourceLink == null)
         {

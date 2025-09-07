@@ -1,9 +1,11 @@
-﻿namespace NP.Lti13Platform.Core.Models;
+﻿using NP.Lti13Platform.Core.Interfaces;
+
+namespace NP.Lti13Platform.Core.Models;
 
 /// <summary>
 /// Represents an attempt on a resource link.
 /// </summary>
-public class Attempt
+public class Attempt: IAttempt
 {
     /// <summary>
     /// The unique identifier of the resource link for which this attempt is made.

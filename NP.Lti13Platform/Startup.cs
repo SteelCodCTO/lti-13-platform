@@ -42,11 +42,8 @@ public static class Startup
     /// <param name="builder">The LTI 1.3 platform builder to configure.</param>
     /// <param name="serviceLifetime">The lifetime of the service to register.</param>
     /// <returns>The configured LTI 1.3 platform builder.</returns>
-    public static Lti13PlatformBuilder WithLti13DataService<T, TAddress, TJwks>(this Lti13PlatformBuilder builder, ServiceLifetime serviceLifetime = ServiceLifetime.Transient)
-        where TAddress : IAddress
-        where TJwks : IJwks
-        //where T : ILti13DataService<TAddress, TJwks>
-        where T: ILti13DataService<TAddress, TJwks>
+    public static Lti13PlatformBuilder WithLti13DataService<T>(this Lti13PlatformBuilder builder, ServiceLifetime serviceLifetime = ServiceLifetime.Transient)
+        where T: ILti13DataService
     {
         builder.WithLti13CoreDataService<T>(serviceLifetime)
             .WithLti13DeepLinkingDataService<T>(serviceLifetime)

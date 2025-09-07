@@ -1,5 +1,6 @@
 ﻿using NP.Lti13Platform.Core.Constants;
 using NP.Lti13Platform.Core.Extensions;
+using NP.Lti13Platform.Core.Interfaces;
 using NP.Lti13Platform.Core.Models;
 using NP.Lti13Platform.Core.Populators;
 using NP.Lti13Platform.Core.Services;
@@ -60,9 +61,9 @@ public class CustomPopulator(ILti13CoreDataService dataService) : Populator<ICus
             }
         }
 
-        LineItem? lineItem = null;
-        Attempt? attempt = null;
-        Grade? grade = null;
+        ILineItem? lineItem = null;
+        IAttempt? attempt = null;
+        IGrade? grade = null;
         if (customDictionary.Values.Any(v => LineItemAttemptGradeVariables.Contains(v)) && scope.Context != null && scope.ResourceLink != null)
         {
             var lineItems = await dataService.GetLineItemsAsync(scope.Deployment.Id, scope.Context.Id, pageIndex: 0, limit: 1, resourceLinkId: scope.ResourceLink.Id, cancellationToken: cancellationToken);
