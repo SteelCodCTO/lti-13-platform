@@ -58,7 +58,7 @@ public class ContextPopulator() : Populator<IContextMessage>
         {
             obj.Context = new IContextMessage.MessageContext
             {
-                Id = scope.Context.Id,
+                Id = scope.Context.ContextId,
                 Label = scope.Context.Label,
                 Title = scope.Context.Title,
                 Types = scope.Context.Types.ToArray()

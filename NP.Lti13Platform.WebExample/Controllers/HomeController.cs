@@ -29,14 +29,14 @@ public class HomeController(ILogger<HomeController> logger, IUrlServiceHelper se
                 userId,
                 false,
                 null,
-                context!.Id,
+                context!.ContextId,
                 new DeepLinkSettingsOverride { Title = "TiTlE", Text = "TEXT", Data = "data" },
                 cancellationToken: cancellationToken),
             resourceLinkUrls = DataService.ResourceLinks
                 .Select(async resourceLink => await service.GetResourceLinkInitiationUrlAsync(
                     tool!,
                     deployment!.Id,
-                    context!.Id,
+                    context!.ContextId,
                     resourceLink,
                     userId,
                     false,

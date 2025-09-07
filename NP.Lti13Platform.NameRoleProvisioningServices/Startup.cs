@@ -264,7 +264,7 @@ public static class Startup
                     Id = httpContext.Request.GetDisplayUrl(),
                     Context = new MembershipContext
                     {
-                        Id = context.Id,
+                        Id = context.ContextId,
                         Label = context.Label,
                         Title = context.Title
                     },

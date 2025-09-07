@@ -13,7 +13,7 @@ public class Context: IContext
     /// Gets or sets the unique identifier for the context.
     /// An opaque identifier that uniquely identifies the context that contains the link being launched. Max Length 255 characters. Case sensitive. This must be immutable for a context in the LMS platform.
     /// </summary>
-    public required string Id { get; set; }
+    public required string ContextId { get; set; }
 
     /// <summary>
     /// Gets or sets the label for the context.

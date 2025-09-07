@@ -140,7 +140,7 @@ public class DeepLinkingPopulator(LinkGenerator linkGenerator, ILti13DeepLinking
         {
             AcceptPresentationDocumentTargets = deepLinkSettings?.AcceptPresentationDocumentTargets ?? config.AcceptPresentationDocumentTargets,
             AcceptTypes = deepLinkSettings?.AcceptTypes ?? config.AcceptTypes,
-            DeepLinkReturnUrl = linkGenerator.GetUriByName(RouteNames.DEEP_LINKING_RESPONSE, new { contextId = scope.Context?.Id }, config.ServiceAddress.Scheme, new HostString(config.ServiceAddress.Authority)) ?? string.Empty,
+            DeepLinkReturnUrl = linkGenerator.GetUriByName(RouteNames.DEEP_LINKING_RESPONSE, new { contextId = scope.Context?.ContextId }, config.ServiceAddress.Scheme, new HostString(config.ServiceAddress.Authority)) ?? string.Empty,
             AcceptLineItem = deepLinkSettings?.AcceptLineItem ?? config.AcceptLineItem,
             AcceptMediaTypes = deepLinkSettings?.AcceptMediaTypes ?? config.AcceptMediaTypes,
             AcceptMultiple = deepLinkSettings?.AcceptMultiple ?? config.AcceptMultiple,

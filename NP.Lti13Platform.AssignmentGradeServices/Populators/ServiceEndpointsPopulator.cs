@@ -67,7 +67,7 @@ public class ServiceEndpointsPopulator(LinkGenerator linkGenerator, ILti13CoreDa
 
             if (scope.ResourceLink != null)
             {
-                var lineItems = await dataService.GetLineItemsAsync(scope.Deployment.Id, scope.Context.Id, 0, 1, null, scope.ResourceLink.Id, null, cancellationToken);
+                var lineItems = await dataService.GetLineItemsAsync(scope.Deployment.Id, scope.Context.ContextId, 0, 1, null, scope.ResourceLink.Id, null, cancellationToken);
                 if (lineItems.TotalItems == 1)
                 {
                     lineItemId = lineItems.Items.FirstOrDefault()?.Id;
@@ -79,8 +79,8 @@ public class ServiceEndpointsPopulator(LinkGenerator linkGenerator, ILti13CoreDa
             obj.ServiceEndpoints = new IServiceEndpoints.LineItemServiceEndpoints
             {
                 Scopes = lineItemScopes,
-                LineItemsUrl = linkGenerator.GetUriByName(RouteNames.GET_LINE_ITEMS, new { deploymentId = scope.Deployment.Id, contextId = scope.Context.Id }, config.ServiceAddress.Scheme, new HostString(config.ServiceAddress.Authority)),
-                LineItemUrl = string.IsNullOrWhiteSpace(lineItemId) ? null : linkGenerator.GetUriByName(RouteNames.GET_LINE_ITEM, new { deploymentId = scope.Deployment.Id, contextId = scope.Context.Id, lineItemId }, config.ServiceAddress.Scheme, new HostString(config.ServiceAddress.Authority)),
+                LineItemsUrl = linkGenerator.GetUriByName(RouteNames.GET_LINE_ITEMS, new { deploymentId = scope.Deployment.Id, contextId = scope.Context.ContextId }, config.ServiceAddress.Scheme, new HostString(config.ServiceAddress.Authority)),
+                LineItemUrl = string.IsNullOrWhiteSpace(lineItemId) ? null : linkGenerator.GetUriByName(RouteNames.GET_LINE_ITEM, new { deploymentId = scope.Deployment.Id, contextId = scope.Context.ContextId, lineItemId }, config.ServiceAddress.Scheme, new HostString(config.ServiceAddress.Authority)),
             };
         }
     }

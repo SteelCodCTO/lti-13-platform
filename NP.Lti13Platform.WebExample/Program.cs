@@ -155,7 +155,7 @@ namespace NP.Lti13Platform.WebExample
 
             Contexts.Add(new Context
             {
-                Id = "contextId",
+                ContextId = "contextId",
                 Label = "asdf_label",
                 Title = "asdf_title",
                 Types = [Lti13ContextTypes.CourseOffering]
@@ -202,7 +202,7 @@ namespace NP.Lti13Platform.WebExample
 
         Task<IContext?> ILti13CoreDataService.GetContextAsync(string contextId, CancellationToken cancellationToken)
         {
-            return Task.FromResult<IContext?>(Contexts.SingleOrDefault(c => c.Id == contextId));
+            return Task.FromResult<IContext?>(Contexts.SingleOrDefault(c => c.ContextId == contextId));
         }
 
         Task<IUser?> ILti13CoreDataService.GetUserAsync(string userId, CancellationToken cancellationToken)

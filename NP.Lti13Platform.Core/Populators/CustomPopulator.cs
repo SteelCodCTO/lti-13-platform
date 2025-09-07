@@ -52,7 +52,7 @@ public class CustomPopulator(ILti13PlatformService platformService, ILti13CoreDa
         IEnumerable<string> mentoredUserIds = [];
         if (customDictionary.Values.Any(v => v == Lti13UserVariables.ScopeMentor) && scope.Context != null)
         {
-            var membership = await dataService.GetMembershipAsync(scope.Context.Id, scope.UserScope.User.Id, cancellationToken);
+            var membership = await dataService.GetMembershipAsync(scope.Context.ContextId, scope.UserScope.User.Id, cancellationToken);
             if (membership != null && membership.Roles.Contains(Lti13ContextRoles.Mentor))
             {
                 mentoredUserIds = membership.MentoredUserIds;
@@ -62,7 +62,7 @@ public class CustomPopulator(ILti13PlatformService platformService, ILti13CoreDa
         IEnumerable<string> actualUserMentoredUserIds = [];
         if (customDictionary.Values.Any(v => v == Lti13ActualUserVariables.ScopeMentor) && scope.Context != null && scope.UserScope.ActualUser != null)
         {
-            var membership = await dataService.GetMembershipAsync(scope.Context.Id, scope.UserScope.ActualUser.Id, cancellationToken);
+            var membership = await dataService.GetMembershipAsync(scope.Context.ContextId, scope.UserScope.ActualUser.Id, cancellationToken);
             if (membership != null && membership.Roles.Contains(Lti13ContextRoles.Mentor))
             {
                 actualUserMentoredUserIds = membership.MentoredUserIds;
@@ -74,7 +74,7 @@ public class CustomPopulator(ILti13PlatformService platformService, ILti13CoreDa
         IGrade? grade = null;
         if (customDictionary.Values.Any(v => LineItemAttemptGradeVariables.Contains(v)) && scope.Context != null && scope.ResourceLink != null)
         {
-            var lineItems = await dataService.GetLineItemsAsync(scope.Deployment.Id, scope.Context.Id, 0, 1, null, scope.ResourceLink.Id, null, cancellationToken);
+            var lineItems = await dataService.GetLineItemsAsync(scope.Deployment.Id, scope.Context.ContextId, 0, 1, null, scope.ResourceLink.Id, null, cancellationToken);
             if (lineItems.TotalItems == 1)
             {
                 lineItem = lineItems.Items.Single();
@@ -85,7 +85,7 @@ public class CustomPopulator(ILti13PlatformService platformService, ILti13CoreDa
             attempt = await dataService.GetAttemptAsync(scope.ResourceLink.Id, scope.UserScope.User.Id, cancellationToken);
         }
 
-        var customPermissions = await dataService.GetCustomPermissions(scope.Deployment.Id, scope.Context?.Id, scope.UserScope.User.Id, scope.UserScope.ActualUser?.Id, cancellationToken);
+        var customPermissions = await dataService.GetCustomPermissions(scope.Deployment.Id, scope.Context?.ContextId, scope.UserScope.User.Id, scope.UserScope.ActualUser?.Id, cancellationToken);
 
         foreach (var kvp in customDictionary.Where(kvp => kvp.Value.StartsWith('$')))
         {
@@ -106,7 +106,7 @@ public class CustomPopulator(ILti13PlatformService platformService, ILti13CoreDa
                 Lti13ActualUserVariables.ScopeMentor when customPermissions.ActualUserScopeMentor && !scope.UserScope.IsAnonymous => string.Join(',', actualUserMentoredUserIds),
                 Lti13ActualUserVariables.GradeLevelsOneRoster when customPermissions.ActualUserGradeLevelsOneRoster && !scope.UserScope.IsAnonymous => scope.UserScope.ActualUser != null ? string.Join(',', scope.UserScope.ActualUser.OneRosterGrades) : string.Empty,
 
-                Lti13ContextVariables.Id when customPermissions.ContextId => scope.Context?.Id,
+                Lti13ContextVariables.Id when customPermissions.ContextId => scope.Context?.ContextId,
                 Lti13ContextVariables.Org when customPermissions.ContextOrg => scope.Context != null ? string.Join(',', scope.Context.Orgs) : string.Empty,
                 Lti13ContextVariables.Type when customPermissions.ContextType => scope.Context != null ? string.Join(',', scope.Context.Types) : string.Empty,
                 Lti13ContextVariables.Label when customPermissions.ContextLabel => scope.Context?.Label,

@@ -50,13 +50,13 @@ public class ServiceEndpointsPopulator(LinkGenerator linkGenerator, ILti13NameRo
     /// <returns>A task that represents the asynchronous operation.</returns>
     public override async Task PopulateAsync(IServiceEndpoints obj, MessageScope scope, CancellationToken cancellationToken = default)
     {
-        if (scope.Tool.ServiceScopes.Contains(Lti13ServiceScopes.MembershipReadOnly) && !string.IsNullOrWhiteSpace(scope.Context?.Id))
+        if (scope.Tool.ServiceScopes.Contains(Lti13ServiceScopes.MembershipReadOnly) && !string.IsNullOrWhiteSpace(scope.Context?.ContextId))
         {
             var config = await nameRoleProvisioningService.GetConfigAsync(scope.Tool.ClientId, cancellationToken);
 
             obj.NamesRoleService = new IServiceEndpoints.ServiceEndpoints
             {
-                ContextMembershipsUrl = linkGenerator.GetUriByName(RouteNames.GET_MEMBERSHIPS, new { deploymentId = scope.Deployment.Id, contextId = scope.Context.Id }, config.ServiceAddress.Scheme, new HostString(config.ServiceAddress.Authority)) ?? string.Empty,
+                ContextMembershipsUrl = linkGenerator.GetUriByName(RouteNames.GET_MEMBERSHIPS, new { deploymentId = scope.Deployment.Id, contextId = scope.Context.ContextId }, config.ServiceAddress.Scheme, new HostString(config.ServiceAddress.Authority)) ?? string.Empty,
                 ServiceVersions = ["2.0"]
             };
         }
