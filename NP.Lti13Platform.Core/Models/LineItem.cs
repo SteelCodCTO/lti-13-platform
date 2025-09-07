@@ -12,7 +12,7 @@ public class LineItem: ILineItem
     /// Gets or sets the ID of the line item.
     /// A unique identifier for the line item as assigned by the platform. The line item ID should remain consistent across sessions and for the lifetime of the line item.
     /// </summary>
-    public required string Id { get; set; }
+    public required string LineItemId { get; set; }
 
     /// <summary>
     /// Gets or sets the deployment ID.
@@ -88,7 +88,7 @@ public class LineItem: ILineItem
     {
         return new LineItem
         {
-            Id = li.Id,
+            LineItemId = li.LineItemId,
             DeploymentId = li.DeploymentId,
             ContextId = li.ContextId,
             ScoreMaximum = li.ScoreMaximum,

@@ -10,7 +10,7 @@ public class ServiceToken: IServiceToken
     /// <summary>
     /// The unique identifier for the service token as defined by the LTI 1.3 specification.
     /// </summary>
-    public required string Id { get; set; }
+    public required string ServiceTokenId { get; set; }
 
     /// <summary>
     /// The unique identifier for the tool associated with this service token as defined by the LTI 1.3 specification.
@@ -30,7 +30,7 @@ public class ServiceToken: IServiceToken
     {
         return new ServiceToken
         {
-            Id = li.Id,
+            ServiceTokenId = li.ServiceTokenId,
             ToolId = li.ToolId,
             Expiration = li.Expiration
         };

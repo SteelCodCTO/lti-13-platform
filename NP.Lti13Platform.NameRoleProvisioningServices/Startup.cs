@@ -169,7 +169,7 @@ public static class Startup
                 }
 
                 var deployment = await coreDataService.GetDeploymentAsync(deploymentId, cancellationToken);
-                if (deployment?.ToolId != tool.Id)
+                if (deployment?.ToolId != tool.ToolId)
                 {
                     return Results.NotFound();
                 }
@@ -198,7 +198,7 @@ public static class Startup
 
                     currentUsers = oldUsers
                         .Concat(currentUsers)
-                        .GroupBy(x => x.User.Id)
+                        .GroupBy(x => x.User.UserId)
                         .Where(x => x.Count() == 1 ||
                             x.First().Membership.Status != x.Last().Membership.Status ||
                             x.First().Membership.Roles.OrderBy(y => y).SequenceEqual(x.Last().Membership.Roles.OrderBy(y => y)))
@@ -247,7 +247,7 @@ public static class Startup
                             await populator.PopulateAsync(userMessage.Message, userMessage.Scope, cancellationToken);
                         }
 
-                        return (userMessage.Scope.UserScope.User.Id, userMessage.Message);
+                        return (userMessage.Scope.UserScope.User.UserId, userMessage.Message);
                     });
 
                     messages = (await Task.WhenAll(tasks)).GroupBy(x => x.Id).ToDictionary(x => x.Key, x => x.Select(y => y.Message));
@@ -255,9 +255,9 @@ public static class Startup
 
                 var usersWithRoles = currentUsers.Where(u => u.Membership.Roles.Any());
 
-                var userPermissions = await nrpsDataService.GetUserPermissionsAsync(deploymentId, contextId, usersWithRoles.Select(u => u.User.Id), cancellationToken);
+                var userPermissions = await nrpsDataService.GetUserPermissionsAsync(deploymentId, contextId, usersWithRoles.Select(u => u.User.UserId), cancellationToken);
 
-                var users = usersWithRoles.Join(userPermissions, u => u.User.Id, p => p.UserId, (u, p) => (u.User, u.Membership, UserPermissions: p, u.IsCurrent));
+                var users = usersWithRoles.Join(userPermissions, u => u.User.UserId, p => p.UserId, (u, p) => (u.User, u.Membership, UserPermissions: p, u.IsCurrent));
 
                 return Results.Json(new MembershipContainer
                 {
@@ -272,7 +272,7 @@ public static class Startup
                     {
                         return new MemberInfo
                         {
-                            UserId = x.User.Id,
+                            UserId = x.User.UserId,
                             Roles = x.Membership.Roles,
                             Name = x.UserPermissions.Name ? x.User.Name : null,
                             GivenName = x.UserPermissions.GivenName ? x.User.GivenName : null,
@@ -285,7 +285,7 @@ public static class Startup
                                 MembershipStatus.Inactive when x.IsCurrent => "Inactive",
                                 _ => "Deleted"
                             },
-                            Message = messages.TryGetValue(x.User.Id, out var message) ? message : null
+                            Message = messages.TryGetValue(x.User.UserId, out var message) ? message : null
                         };
                     })
                 }, JSON_SERIALIZER_OPTIONS, contentType: Lti13ContentTypes.MembershipContainer);

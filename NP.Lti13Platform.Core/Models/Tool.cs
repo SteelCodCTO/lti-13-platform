@@ -13,7 +13,7 @@ public class Tool: ITool
     /// Gets or sets the unique identifier for the tool.
     /// A locally assigned identifier used by the platform to refer to this tool. This may differ from the client ID which is used for OAuth 2.0 authentication.
     /// </summary>
-    public required string Id { get; set; }
+    public required string ToolId { get; set; }
 
     /// <summary>
     /// Gets or sets the client identifier for the tool.

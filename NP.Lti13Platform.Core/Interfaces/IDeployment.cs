@@ -8,7 +8,7 @@ public interface IDeployment
     /// <summary>
     /// The unique identifier for the deployment as assigned by the platform. This value is used to identify the platform-tool integration governing the message.
     /// </summary>
-    public string Id { get; set; }
+    public string DeploymentId { get; set; }
 
     /// <summary>
     /// The unique identifier for the tool associated with this deployment.

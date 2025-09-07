@@ -56,7 +56,7 @@ public class ServiceEndpointsPopulator(LinkGenerator linkGenerator, ILti13NameRo
 
             obj.NamesRoleService = new IServiceEndpoints.ServiceEndpoints
             {
-                ContextMembershipsUrl = linkGenerator.GetUriByName(RouteNames.GET_MEMBERSHIPS, new { deploymentId = scope.Deployment.Id, contextId = scope.Context.ContextId }, config.ServiceAddress.Scheme, new HostString(config.ServiceAddress.Authority)) ?? string.Empty,
+                ContextMembershipsUrl = linkGenerator.GetUriByName(RouteNames.GET_MEMBERSHIPS, new { deploymentId = scope.Deployment.DeploymentId, contextId = scope.Context.ContextId }, config.ServiceAddress.Scheme, new HostString(config.ServiceAddress.Authority)) ?? string.Empty,
                 ServiceVersions = ["2.0"]
             };
         }

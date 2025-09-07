@@ -122,7 +122,7 @@ public class DeepLinkingPopulator(LinkGenerator linkGenerator, ILti13DeepLinking
     public override async Task PopulateAsync(IDeepLinkingMessage obj, MessageScope scope, CancellationToken cancellationToken = default)
     {
         obj.LtiVersion = "1.3.0";
-        obj.DeploymentId = scope.Deployment.Id;
+        obj.DeploymentId = scope.Deployment.DeploymentId;
 
         DeepLinkSettingsOverride? deepLinkSettings = default;
         LaunchPresentationOverride? launchPresentation = default;

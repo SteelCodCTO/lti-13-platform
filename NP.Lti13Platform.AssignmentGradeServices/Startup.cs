@@ -92,7 +92,7 @@ public static class Startup
                 }
 
                 var deployment = await coreDataService.GetDeploymentAsync(deploymentId, cancellationToken);
-                if (deployment?.ToolId != tool.Id)
+                if (deployment?.ToolId != tool.ToolId)
                 {
                     return Results.NotFound();
                 }
@@ -127,7 +127,7 @@ public static class Startup
 
                 return Results.Json(lineItemsResponse.Items.Select(i => new
                 {
-                    Id = linkGenerator.GetUriByName(httpContext, RouteNames.GET_LINE_ITEM, new { deploymentId, contextId, lineItemId = i.Id }),
+                    Id = linkGenerator.GetUriByName(httpContext, RouteNames.GET_LINE_ITEM, new { deploymentId, contextId, lineItemId = i.LineItemId }),
                     i.StartDateTime,
                     i.EndDateTime,
                     i.ScoreMaximum,
@@ -161,7 +161,7 @@ public static class Startup
                 }
 
                 var deployment = await coreDataService.GetDeploymentAsync(deploymentId, cancellationToken);
-                if (deployment?.ToolId != tool.Id)
+                if (deployment?.ToolId != tool.ToolId)
                 {
                     return Results.NotFound();
                 }
@@ -198,7 +198,7 @@ public static class Startup
 
                 var lineItemId = await assignmentGradeDataService.SaveLineItemAsync(new LineItem
                 {
-                    Id = string.Empty,
+                    LineItemId = string.Empty,
                     DeploymentId = deploymentId,
                     ContextId = contextId,
                     Label = request.Label,
@@ -249,7 +249,7 @@ public static class Startup
                 }
 
                 var deployment = await coreDataService.GetDeploymentAsync(deploymentId, cancellationToken);
-                if (deployment?.ToolId != tool.Id)
+                if (deployment?.ToolId != tool.ToolId)
                 {
                     return Results.NotFound();
                 }
@@ -302,7 +302,7 @@ public static class Startup
                 }
 
                 var deployment = await coreDataService.GetDeploymentAsync(deploymentId, cancellationToken);
-                if (deployment?.ToolId != tool.Id)
+                if (deployment?.ToolId != tool.ToolId)
                 {
                     return Results.NotFound();
                 }
@@ -387,7 +387,7 @@ public static class Startup
                 }
 
                 var deployment = await coreDataService.GetDeploymentAsync(deploymentId, cancellationToken);
-                if (deployment?.ToolId != tool.Id)
+                if (deployment?.ToolId != tool.ToolId)
                 {
                     return Results.NotFound();
                 }
@@ -432,7 +432,7 @@ public static class Startup
                 }
 
                 var deployment = await coreDataService.GetDeploymentAsync(deploymentId, cancellationToken);
-                if (deployment?.ToolId != tool.Id)
+                if (deployment?.ToolId != tool.ToolId)
                 {
                     return Results.NotFound();
                 }
@@ -506,7 +506,7 @@ public static class Startup
                 }
 
                 var deployment = await coreDataService.GetDeploymentAsync(deploymentId, cancellationToken);
-                if (deployment?.ToolId != tool.Id)
+                if (deployment?.ToolId != tool.ToolId)
                 {
                     return Results.NotFound();
                 }

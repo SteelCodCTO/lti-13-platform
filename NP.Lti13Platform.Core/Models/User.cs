@@ -11,7 +11,7 @@ public class User: IUser
     /// <summary>
     /// Gets or sets the unique identifier for the user.
     /// </summary>
-    public required string Id { get; set; }
+    public required string UserId { get; set; }
 
     /// <summary>
     /// Full name in displayable form including all name parts, possibly including titles and suffixes, ordered according to the user's locale and preferences.

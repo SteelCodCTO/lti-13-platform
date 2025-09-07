@@ -97,7 +97,7 @@ public class UrlServiceHelper(ILti13TokenConfigService tokenService) : IUrlServi
             isAnonymous,
             actualUserId,
             contextId,
-            resourceLink.Id,
+            resourceLink.ResourceLinkId,
             Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(launchPresentation))),
             cancellationToken);
 

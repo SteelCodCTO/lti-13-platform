@@ -54,7 +54,7 @@ public class CustomPopulator(ILti13CoreDataService dataService) : Populator<ICus
         IEnumerable<string> mentoredUserIds = [];
         if (customDictionary.Values.Any(v => v == Lti13UserVariables.ScopeMentor) && scope.Context != null )
         {
-            var membership = await dataService.GetMembershipAsync(scope.Context.ContextId, scope.UserScope.User.Id, cancellationToken);
+            var membership = await dataService.GetMembershipAsync(scope.Context.ContextId, scope.UserScope.User.UserId, cancellationToken);
             if (membership != null && membership.Roles.Contains(Lti13ContextRoles.Mentor))
             {
                 mentoredUserIds = membership.MentoredUserIds;
@@ -66,25 +66,25 @@ public class CustomPopulator(ILti13CoreDataService dataService) : Populator<ICus
         IGrade? grade = null;
         if (customDictionary.Values.Any(v => LineItemAttemptGradeVariables.Contains(v)) && scope.Context != null && scope.ResourceLink != null)
         {
-            var lineItems = await dataService.GetLineItemsAsync(scope.Deployment.Id, scope.Context.ContextId, pageIndex: 0, limit: 1, resourceLinkId: scope.ResourceLink.Id, cancellationToken: cancellationToken);
+            var lineItems = await dataService.GetLineItemsAsync(scope.Deployment.DeploymentId, scope.Context.ContextId, pageIndex: 0, limit: 1, resourceLinkId: scope.ResourceLink.ResourceLinkId, cancellationToken: cancellationToken);
             if (lineItems.TotalItems == 1)
             {
                 lineItem = lineItems.Items.First();
 
-                grade = await dataService.GetGradeAsync(lineItem.Id, scope.UserScope.User.Id, cancellationToken);
+                grade = await dataService.GetGradeAsync(lineItem.LineItemId, scope.UserScope.User.UserId, cancellationToken);
             }
 
-            attempt = await dataService.GetAttemptAsync(scope.ResourceLink.Id, scope.UserScope.User.Id, cancellationToken);
+            attempt = await dataService.GetAttemptAsync(scope.ResourceLink.ResourceLinkId, scope.UserScope.User.UserId, cancellationToken);
         }
 
-        var customPermissions = await dataService.GetCustomPermissions(scope.Deployment.Id, scope.Context?.ContextId, scope.UserScope.User.Id, scope.UserScope.ActualUser?.Id, cancellationToken);
+        var customPermissions = await dataService.GetCustomPermissions(scope.Deployment.DeploymentId, scope.Context?.ContextId, scope.UserScope.User.UserId, scope.UserScope.ActualUser?.UserId, cancellationToken);
 
         var dictionaryValues = customDictionary.ToList();
         foreach (var kvp in dictionaryValues)
         {
             var value = kvp.Value switch
             {
-                Lti13UserVariables.Id when customPermissions.UserId => scope.UserScope.User.Id,
+                Lti13UserVariables.Id when customPermissions.UserId => scope.UserScope.User.UserId,
                 Lti13UserVariables.Image when customPermissions.UserImage => scope.UserScope.User.Picture?.ToString(),
                 Lti13UserVariables.Username when customPermissions.UserUsername => scope.UserScope.User.Username,
                 Lti13UserVariables.Org when customPermissions.UserOrg => string.Join(',', scope.UserScope.User.Orgs),

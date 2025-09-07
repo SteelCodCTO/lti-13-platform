@@ -52,7 +52,7 @@ public class CustomPopulator(ILti13PlatformService platformService, ILti13CoreDa
         IEnumerable<string> mentoredUserIds = [];
         if (customDictionary.Values.Any(v => v == Lti13UserVariables.ScopeMentor) && scope.Context != null)
         {
-            var membership = await dataService.GetMembershipAsync(scope.Context.ContextId, scope.UserScope.User.Id, cancellationToken);
+            var membership = await dataService.GetMembershipAsync(scope.Context.ContextId, scope.UserScope.User.UserId, cancellationToken);
             if (membership != null && membership.Roles.Contains(Lti13ContextRoles.Mentor))
             {
                 mentoredUserIds = membership.MentoredUserIds;
@@ -62,7 +62,7 @@ public class CustomPopulator(ILti13PlatformService platformService, ILti13CoreDa
         IEnumerable<string> actualUserMentoredUserIds = [];
         if (customDictionary.Values.Any(v => v == Lti13ActualUserVariables.ScopeMentor) && scope.Context != null && scope.UserScope.ActualUser != null)
         {
-            var membership = await dataService.GetMembershipAsync(scope.Context.ContextId, scope.UserScope.ActualUser.Id, cancellationToken);
+            var membership = await dataService.GetMembershipAsync(scope.Context.ContextId, scope.UserScope.ActualUser.UserId, cancellationToken);
             if (membership != null && membership.Roles.Contains(Lti13ContextRoles.Mentor))
             {
                 actualUserMentoredUserIds = membership.MentoredUserIds;
@@ -74,32 +74,32 @@ public class CustomPopulator(ILti13PlatformService platformService, ILti13CoreDa
         IGrade? grade = null;
         if (customDictionary.Values.Any(v => LineItemAttemptGradeVariables.Contains(v)) && scope.Context != null && scope.ResourceLink != null)
         {
-            var lineItems = await dataService.GetLineItemsAsync(scope.Deployment.Id, scope.Context.ContextId, 0, 1, null, scope.ResourceLink.Id, null, cancellationToken);
+            var lineItems = await dataService.GetLineItemsAsync(scope.Deployment.DeploymentId, scope.Context.ContextId, 0, 1, null, scope.ResourceLink.ResourceLinkId, null, cancellationToken);
             if (lineItems.TotalItems == 1)
             {
                 lineItem = lineItems.Items.Single();
 
-                grade = await dataService.GetGradeAsync(lineItem.Id, scope.UserScope.User.Id, cancellationToken);
+                grade = await dataService.GetGradeAsync(lineItem.LineItemId, scope.UserScope.User.UserId, cancellationToken);
             }
 
-            attempt = await dataService.GetAttemptAsync(scope.ResourceLink.Id, scope.UserScope.User.Id, cancellationToken);
+            attempt = await dataService.GetAttemptAsync(scope.ResourceLink.ResourceLinkId, scope.UserScope.User.UserId, cancellationToken);
         }
 
-        var customPermissions = await dataService.GetCustomPermissions(scope.Deployment.Id, scope.Context?.ContextId, scope.UserScope.User.Id, scope.UserScope.ActualUser?.Id, cancellationToken);
+        var customPermissions = await dataService.GetCustomPermissions(scope.Deployment.DeploymentId, scope.Context?.ContextId, scope.UserScope.User.UserId, scope.UserScope.ActualUser?.UserId, cancellationToken);
 
         foreach (var kvp in customDictionary.Where(kvp => kvp.Value.StartsWith('$')))
         {
             // TODO: LIS variables
             customDictionary[kvp.Key] = kvp.Value switch
             {
-                Lti13UserVariables.Id when customPermissions.UserId && !scope.UserScope.IsAnonymous => scope.UserScope.User.Id,
+                Lti13UserVariables.Id when customPermissions.UserId && !scope.UserScope.IsAnonymous => scope.UserScope.User.UserId,
                 Lti13UserVariables.Image when customPermissions.UserImage && !scope.UserScope.IsAnonymous => scope.UserScope.User.Picture?.ToString(),
                 Lti13UserVariables.Username when customPermissions.UserUsername && !scope.UserScope.IsAnonymous => scope.UserScope.User.Username,
                 Lti13UserVariables.Org when customPermissions.UserOrg && !scope.UserScope.IsAnonymous => string.Join(',', scope.UserScope.User.Orgs),
                 Lti13UserVariables.ScopeMentor when customPermissions.UserScopeMentor && !scope.UserScope.IsAnonymous => string.Join(',', mentoredUserIds),
                 Lti13UserVariables.GradeLevelsOneRoster when customPermissions.UserGradeLevelsOneRoster && !scope.UserScope.IsAnonymous => string.Join(',', scope.UserScope.User.OneRosterGrades),
 
-                Lti13ActualUserVariables.Id when customPermissions.ActualUserId && !scope.UserScope.IsAnonymous => scope.UserScope.ActualUser?.Id,
+                Lti13ActualUserVariables.Id when customPermissions.ActualUserId && !scope.UserScope.IsAnonymous => scope.UserScope.ActualUser?.UserId,
                 Lti13ActualUserVariables.Image when customPermissions.ActualUserImage && !scope.UserScope.IsAnonymous => scope.UserScope.ActualUser?.Picture?.ToString(),
                 Lti13ActualUserVariables.Username when customPermissions.ActualUserUsername && !scope.UserScope.IsAnonymous => scope.UserScope.ActualUser?.Username,
                 Lti13ActualUserVariables.Org when customPermissions.ActualUserOrg && !scope.UserScope.IsAnonymous => scope.UserScope.ActualUser != null ? string.Join(',', scope.UserScope.ActualUser.Orgs) : string.Empty,
@@ -115,7 +115,7 @@ public class CustomPopulator(ILti13PlatformService platformService, ILti13CoreDa
                 Lti13ContextVariables.IdHistory when customPermissions.ContextIdHistory => scope.Context != null ? string.Join(',', scope.Context.ClonedIdHistory) : string.Empty,
                 Lti13ContextVariables.GradeLevelsOneRoster when customPermissions.ContextGradeLevelsOneRoster => scope.Context != null ? string.Join(',', scope.Context.OneRosterGrades) : string.Empty,
 
-                Lti13ResourceLinkVariables.Id when customPermissions.ResourceLinkId => scope.ResourceLink?.Id,
+                Lti13ResourceLinkVariables.Id when customPermissions.ResourceLinkId => scope.ResourceLink?.ResourceLinkId,
                 Lti13ResourceLinkVariables.Title when customPermissions.ResourceLinkTitle => scope.ResourceLink?.Title,
                 Lti13ResourceLinkVariables.Description when customPermissions.ResourceLinkDescription => scope.ResourceLink?.Text,
                 Lti13ResourceLinkVariables.AvailableStartDateTime when customPermissions.ResourceLinkAvailableStartDateTime => scope.ResourceLink?.AvailableStartDateTime?.ToString("O"),

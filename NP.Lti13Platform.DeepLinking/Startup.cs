@@ -125,7 +125,7 @@ public static class Startup
                 }
 
                 var deployment = await coreDataService.GetDeploymentAsync(deploymentIdClaim.Value, cancellationToken);
-                if (deployment == null || deployment.ToolId != tool.Id)
+                if (deployment == null || deployment.ToolId != tool.ToolId)
                 {
                     return Results.BadRequest(new LtiBadRequest { Error = INVALID_REQUEST, Error_Description = "deployment_id is invalid", Error_Uri = DEEP_LINKING_SPEC });
                 }
@@ -192,14 +192,14 @@ public static class Startup
                 {
                     var saveTasks = contentItems.Select(async ci =>
                     {
-                        var id = await deepLinkingDataService.SaveContentItemAsync(deployment.Id, contextId, ci.ContentItem);
+                        var id = await deepLinkingDataService.SaveContentItemAsync(deployment.DeploymentId, contextId, ci.ContentItem);
 
                         if (deepLinkingConfig.AcceptLineItem == true && contextId != null && ci.LtiResourceLink?.LineItem != null)
                         {
                             await deepLinkingDataService.SaveLineItemAsync(new LineItem
                             {
-                                Id = string.Empty,
-                                DeploymentId = deployment.Id,
+                                LineItemId = string.Empty,
+                                DeploymentId = deployment.DeploymentId,
                                 ContextId = contextId,
                                 Label = ci.LtiResourceLink.LineItem!.Label ?? ci.LtiResourceLink.Title ?? ci.LtiResourceLink.Type,
                                 ScoreMaximum = ci.LtiResourceLink.LineItem.ScoreMaximum,
@@ -216,7 +216,7 @@ public static class Startup
                     await Task.WhenAll(saveTasks);
                 }
 
-                return await deepLinkingHandler.HandleResponseAsync(tool.ClientId, deployment.Id, contextId, response, cancellationToken);
+                return await deepLinkingHandler.HandleResponseAsync(tool.ClientId, deployment.DeploymentId, contextId, response, cancellationToken);
             })
             .WithName(RouteNames.DEEP_LINKING_RESPONSE)
             .DisableAntiforgery()

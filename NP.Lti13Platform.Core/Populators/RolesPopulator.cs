@@ -39,7 +39,7 @@ public class RolesPopulator(ILti13CoreDataService dataService) : Populator<IRole
     {
         if (scope.Context != null)
         {
-            var membership = await dataService.GetMembershipAsync(scope.Context.ContextId, scope.UserScope.User.Id, cancellationToken);
+            var membership = await dataService.GetMembershipAsync(scope.Context.ContextId, scope.UserScope.User.UserId, cancellationToken);
             if (membership != null)
             {
                 obj.Roles = membership.Roles;

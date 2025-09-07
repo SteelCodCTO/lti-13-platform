@@ -263,13 +263,13 @@ public static class Startup
                 }
                 else
                 {
-                    var serviceToken = await dataService.GetServiceTokenAsync(tool.Id, validatedToken.SecurityToken.Id, cancellationToken);
+                    var serviceToken = await dataService.GetServiceTokenAsync(tool.ToolId, validatedToken.SecurityToken.Id, cancellationToken);
                     if (serviceToken?.Expiration > DateTime.UtcNow)
                     {
                         return Results.BadRequest(new LtiBadRequest { Error = INVALID_REQUEST, Error_Description = "jti has already been used and is not expired", Error_Uri = AUTH_SPEC_URI });
                     }
 
-                    await dataService.SaveServiceTokenAsync(new ServiceToken { Id = validatedToken.SecurityToken.Id, ToolId = tool.Id, Expiration = validatedToken.SecurityToken.ValidTo }, cancellationToken);
+                    await dataService.SaveServiceTokenAsync(new ServiceToken { ServiceTokenId = validatedToken.SecurityToken.Id, ToolId = tool.ToolId, Expiration = validatedToken.SecurityToken.ValidTo }, cancellationToken);
                 }
 
                 var privateKey = await dataService.GetPrivateKeyAsync(cancellationToken);
@@ -378,7 +378,7 @@ public static class Startup
         var (messageTypeString, deploymentId, contextId, resourceLinkId, messageHintString) = await urlServiceHelper.ParseLtiMessageHintAsync(request.Lti_Message_Hint, cancellationToken);
 
         var deployment = await dataService.GetDeploymentAsync(deploymentId, cancellationToken);
-        if (deployment?.ToolId != tool.Id)
+        if (deployment?.ToolId != tool.ToolId)
         {
             return Results.BadRequest(new LtiBadRequest { Error = INVALID_REQUEST, Error_Description = "deployment is not for client", Error_Uri = AUTH_SPEC_URI });
         }
@@ -421,9 +421,9 @@ public static class Startup
 
         if (!isAnonymous)
         {
-            var userPermissions = await dataService.GetUserPermissionsAsync(deployment.Id, contextId, user.Id, cancellationToken);
+            var userPermissions = await dataService.GetUserPermissionsAsync(deployment.DeploymentId, contextId, user.UserId, cancellationToken);
 
-            ltiMessage.Subject = user.Id;
+            ltiMessage.Subject = user.UserId;
 
             ltiMessage.Address = userAddress == null || !userPermissions.Address ? null : new AddressClaim
             {

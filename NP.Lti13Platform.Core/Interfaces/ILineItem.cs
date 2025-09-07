@@ -10,7 +10,7 @@ public interface ILineItem
     /// Gets or sets the ID of the line item.
     /// A unique identifier for the line item as assigned by the platform. The line item ID should remain consistent across sessions and for the lifetime of the line item.
     /// </summary>
-    public string Id { get; set; }
+    public string LineItemId { get; set; }
 
     /// <summary>
     /// Gets or sets the deployment ID.

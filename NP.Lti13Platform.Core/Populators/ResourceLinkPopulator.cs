@@ -80,12 +80,12 @@ public class ResourceLinkPopulator() : Populator<IResourceLinkMessage>
         }
 
         obj.LtiVersion = "1.3.0";
-        obj.DeploymentId = scope.Deployment.Id;
+        obj.DeploymentId = scope.Deployment.DeploymentId;
 
         obj.TargetLinkUri = (scope.ResourceLink.Url ?? scope.Tool.LaunchUrl).ToString();
         obj.ResourceLink = new IResourceLinkMessage.ResourceLinkMessage
         {
-            Id = scope.ResourceLink.Id,
+            Id = scope.ResourceLink.ResourceLinkId,
             Description = scope.ResourceLink.Text,
             Title = scope.ResourceLink.Title
         };

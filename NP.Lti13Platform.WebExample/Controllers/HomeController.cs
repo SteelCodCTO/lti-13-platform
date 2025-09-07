@@ -25,7 +25,7 @@ public class HomeController(ILogger<HomeController> logger, IUrlServiceHelper se
         {
             deepLinkUrl = await service.GetDeepLinkInitiationUrlAsync(
                 tool!,
-                deployment!.Id,
+                deployment!.DeploymentId,
                 userId,
                 false,
                 null,
@@ -35,7 +35,7 @@ public class HomeController(ILogger<HomeController> logger, IUrlServiceHelper se
             resourceLinkUrls = DataService.ResourceLinks
                 .Select(async resourceLink => await service.GetResourceLinkInitiationUrlAsync(
                     tool!,
-                    deployment!.Id,
+                    deployment!.DeploymentId,
                     context!.ContextId,
                     resourceLink,
                     userId,
