@@ -1,5 +1,4 @@
 ﻿using NP.Lti13Platform.Core.Interfaces;
-using NP.Lti13Platform.Core.Models;
 
 namespace NP.Lti13Platform.NameRoleProvisioningServices.Services;
 
