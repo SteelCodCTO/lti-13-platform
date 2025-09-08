@@ -1,7 +1,7 @@
-﻿using NP.Lti13Platform.Core.Constants;
+﻿using NP.Lti13Platform.Core.Configs;
+using NP.Lti13Platform.Core.Constants;
 using NP.Lti13Platform.Core.Extensions;
 using NP.Lti13Platform.Core.Interfaces;
-using NP.Lti13Platform.Core.Models;
 using NP.Lti13Platform.Core.Services;
 using System.Text.Json.Serialization;
 
@@ -44,7 +44,7 @@ public class CustomPopulator(ILti13PlatformService platformService, ILti13CoreDa
             return;
         }
 
-        Platform? platform = null;
+        Lti13PlatformConfig? platform = null;
         if (customDictionary.Values.Any(v => v.StartsWith(Lti13ToolPlatformVariables.Version.Split('.')[0])) == true)
         {
             platform = await platformService.GetPlatformAsync(scope.Tool.ClientId, cancellationToken);

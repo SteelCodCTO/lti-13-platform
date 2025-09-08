@@ -72,7 +72,7 @@ public static class Startup
 
         builder.Services.AddHttpContextAccessor();
 
-        builder.Services.AddOptions<Platform>().BindConfiguration("Lti13Platform:Platform");
+        builder.Services.AddOptions<Lti13PlatformConfig>().BindConfiguration("Lti13Platform:Platform");
         builder.Services.TryAddSingleton<ILti13PlatformService, DefaultPlatformService>();
 
         builder.Services.AddOptions<Lti13PlatformTokenConfig>()

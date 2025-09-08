@@ -1,11 +1,11 @@
-﻿namespace NP.Lti13Platform.Core.Models;
+﻿namespace NP.Lti13Platform.Core.Configs;
 
 /// <summary>
 /// Represents an LTI platform as defined in the LTI 1.3 core specification.
 /// A platform (also known as a tool consumer) is a learning system that integrates external tools
 /// using the LTI protocol, such as a Learning Management System (LMS).
 /// </summary>
-public class Platform
+public class Lti13PlatformConfig
 {
     /// <summary>
     /// A stable locally unique to the iss identifier for an instance of the tool platform. The value of guid is a case-sensitive string that MUST NOT exceed 255 ASCII characters in length. The use of Universally Unique IDentifier (UUID) defined in [RFC4122] is recommended.
