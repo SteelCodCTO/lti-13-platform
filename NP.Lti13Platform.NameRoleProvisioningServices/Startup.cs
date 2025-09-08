@@ -250,7 +250,7 @@ public static class Startup
                         return (userMessage.Scope.UserScope.User.UserId, userMessage.Message);
                     });
 
-                    messages = (await Task.WhenAll(tasks)).GroupBy(x => x.Id).ToDictionary(x => x.Key, x => x.Select(y => y.Message));
+                    messages = (await Task.WhenAll(tasks)).GroupBy(x => x.UserId).ToDictionary(x => x.Key, x => x.Select(y => y.Message));
                 }
 
                 var usersWithRoles = currentUsers.Where(u => u.Membership.Roles.Any());
