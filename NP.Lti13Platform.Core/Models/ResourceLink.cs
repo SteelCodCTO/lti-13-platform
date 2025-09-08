@@ -45,22 +45,22 @@ public class ResourceLink: IResourceLink
     /// <summary>
     /// date and time when the link becomes accessible.
     /// </summary>
-    public DateTime? AvailableStartDateTime { get; set; }
+    public DateTimeOffset? AvailableStartDateTime { get; set; }
 
     /// <summary>
     /// date and time when the link stops being accessible.
     /// </summary>
-    public DateTime? AvailableEndDateTime { get; set; }
+    public DateTimeOffset? AvailableEndDateTime { get; set; }
 
     /// <summary>
     /// Date and time when the link can start receiving submissions.
     /// </summary>
-    public DateTime? SubmissionStartDateTime { get; set; }
+    public DateTimeOffset? SubmissionStartDateTime { get; set; }
 
     /// <summary>
     /// Date and time when the link stops accepting submissions.
     /// </summary>
-    public DateTime? SubmissionEndDateTime { get; set; }
+    public DateTimeOffset? SubmissionEndDateTime { get; set; }
 
     /// <summary>
     /// The list of resource links that this resource link was copied from. Enables platforms to maintain continuity when a link is copied.

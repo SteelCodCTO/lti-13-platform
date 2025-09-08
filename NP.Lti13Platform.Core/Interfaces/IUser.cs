@@ -100,7 +100,7 @@ public interface IUser
     /// <summary>
     /// Time the user's information was last updated.
     /// </summary>
-    public DateTime? UpdatedAt { get; set; }
+    public DateTimeOffset? UpdatedAt { get; set; }
 
     ///// <summary>
     ///// User's preferred postal address.

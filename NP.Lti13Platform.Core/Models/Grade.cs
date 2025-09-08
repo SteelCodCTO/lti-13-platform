@@ -42,12 +42,12 @@ public class Grade: IGrade
     /// <summary>
     /// The date and time when this grade was created or last modified. As specified by the ISO 8601 format in the LTI specification.
     /// </summary>
-    public DateTime Timestamp { get; set; }
+    public DateTimeOffset Timestamp { get; set; }
 
     /// <summary>
     /// The date and time when this grade was or will be released to the student. Can be used for scheduled grade releases.
     /// </summary>
-    public DateTime? ReleaseDateTime { get; set; }
+    public DateTimeOffset? ReleaseDateTime { get; set; }
 
     /// <summary>
     /// Indicates the status of the user's activity associated with this grade. As defined in the LTI Assignment and Grade Services specification.
@@ -62,12 +62,12 @@ public class Grade: IGrade
     /// <summary>
     /// When the user began working on the activity associated with this grade.
     /// </summary>
-    public DateTime? StartedAt { get; set; }
+    public DateTimeOffset? StartedAt { get; set; }
 
     /// <summary>
     /// When the user submitted their work for the activity associated with this grade.
     /// </summary>
-    public DateTime? SubmittedAt { get; set; }
+    public DateTimeOffset? SubmittedAt { get; set; }
 
     /// <summary>
     /// Creates a strongly-typed clone of the given IGrade instance.

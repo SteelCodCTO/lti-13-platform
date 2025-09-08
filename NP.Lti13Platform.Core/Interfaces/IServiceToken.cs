@@ -18,5 +18,5 @@ public interface IServiceToken
     /// <summary>
     /// The expiration date and time of the service token as defined by the LTI 1.3 specification.
     /// </summary>
-    public DateTime Expiration { get; set; }
+    public DateTimeOffset Expiration { get; set; }
 }

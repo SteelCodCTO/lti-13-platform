@@ -64,17 +64,17 @@ public interface ILineItem
     /// Gets or sets the date and time when grades were released.
     /// The timestamp when the platform marked the grades for this line item as being released to students.
     /// </summary>
-    public DateTime? GradesReleasedDateTime { get; set; }
+    public DateTimeOffset? GradesReleasedDateTime { get; set; }
 
     /// <summary>
     /// Gets or sets the start date and time for the line item.
     /// Date and time when the line item becomes available for submission.
     /// </summary>
-    public DateTime? StartDateTime { get; set; }
+    public DateTimeOffset? StartDateTime { get; set; }
 
     /// <summary>
     /// Gets or sets the end date and time for the line item.
     /// Date and time when the line item is no longer available for submission (i.e., the due date).
     /// </summary>
-    public DateTime? EndDateTime { get; set; }
+    public DateTimeOffset? EndDateTime { get; set; }
 }

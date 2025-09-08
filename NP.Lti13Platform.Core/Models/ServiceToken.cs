@@ -20,7 +20,7 @@ public class ServiceToken: IServiceToken
     /// <summary>
     /// The expiration date and time of the service token as defined by the LTI 1.3 specification.
     /// </summary>
-    public required DateTime Expiration { get; set; }
+    public required DateTimeOffset Expiration { get; set; }
 
 
     /// <summary>

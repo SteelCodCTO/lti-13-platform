@@ -223,14 +223,14 @@ public class LtiMessage
     /// Gets or sets the time when the user's information was last updated.
     /// </summary>
     [JsonIgnore]
-    public DateTime? UpdatedAt { get; set; }
+    public DateTimeOffset? UpdatedAt { get; set; }
 
     /// <summary>
     /// Gets the time when the user's information was last updated as a Unix timestamp.
     /// Time the End-User's information was last updated.
     /// </summary>
     [JsonPropertyName("updated_at")]
-    public long? UpdatedAtUnix => !UpdatedAt.HasValue ? null : new DateTimeOffset(UpdatedAt.GetValueOrDefault()).ToUnixTimeSeconds();
+    public long? UpdatedAtUnix => !UpdatedAt.HasValue ? null : UpdatedAt.GetValueOrDefault().ToUnixTimeSeconds();
 }
 
 /// <summary>
