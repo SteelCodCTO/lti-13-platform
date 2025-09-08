@@ -24,7 +24,7 @@ public interface IPlatformMessage
         /// Gets or sets the GUID of the platform.
         /// </summary>
         [JsonPropertyName("guid")]
-        public required string Guid { get; set; }
+        public required Guid Guid { get; set; }
 
         /// <summary>
         /// Gets or sets the contact email of the platform.

@@ -9,7 +9,7 @@ public class Lti13PlatformTokenConfig
     /// <summary>
     /// A case-sensitive URL using the HTTPS scheme that contains: scheme, host; and, optionally, port number, and path components; and, no query or fragment components. The issuer identifies the platform to the tools.
     /// </summary>
-    public required string Issuer
+    public string Issuer
     {
         get => _issuer;
         set

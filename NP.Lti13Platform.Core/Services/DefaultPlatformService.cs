@@ -4,7 +4,7 @@ using NP.Lti13Platform.Core.Models;
 
 namespace NP.Lti13Platform.Core.Services;
 
-internal class DefaultPlatformService(IOptionsMonitor<IPlatform> config) : ILti13PlatformService
+internal class DefaultPlatformService(IOptionsMonitor<Platform> config) : ILti13PlatformService
 {
-    public async Task<IPlatform?> GetPlatformAsync(string clientId, CancellationToken cancellationToken = default) => await Task.FromResult(!string.IsNullOrWhiteSpace(config.CurrentValue.Guid) ? config.CurrentValue : null);
+    public async Task<Platform?> GetPlatformAsync(string clientId, CancellationToken cancellationToken = default) => await Task.FromResult(config.CurrentValue.Guid != Guid.Empty ? config.CurrentValue : null);
 }

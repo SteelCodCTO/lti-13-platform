@@ -1,6 +1,7 @@
 ﻿using NP.Lti13Platform.Core.Constants;
 using NP.Lti13Platform.Core.Extensions;
 using NP.Lti13Platform.Core.Interfaces;
+using NP.Lti13Platform.Core.Models;
 using NP.Lti13Platform.Core.Services;
 using System.Text.Json.Serialization;
 
@@ -43,7 +44,7 @@ public class CustomPopulator(ILti13PlatformService platformService, ILti13CoreDa
             return;
         }
 
-        IPlatform? platform = null;
+        Platform? platform = null;
         if (customDictionary.Values.Any(v => v.StartsWith(Lti13ToolPlatformVariables.Version.Split('.')[0])) == true)
         {
             platform = await platformService.GetPlatformAsync(scope.Tool.ClientId, cancellationToken);
@@ -132,7 +133,7 @@ public class CustomPopulator(ILti13PlatformService platformService, ILti13CoreDa
 
                 Lti13ToolPlatformVariables.ProductFamilyCode when customPermissions.ToolPlatformProductFamilyCode => platform?.ProductFamilyCode,
                 Lti13ToolPlatformVariables.Version when customPermissions.ToolPlatformProductVersion => platform?.Version,
-                Lti13ToolPlatformVariables.InstanceGuid when customPermissions.ToolPlatformProductInstanceGuid => platform?.Guid,
+                Lti13ToolPlatformVariables.InstanceGuid when customPermissions.ToolPlatformProductInstanceGuid => platform?.Guid.ToString(),
                 Lti13ToolPlatformVariables.InstanceName when customPermissions.ToolPlatformProductInstanceName => platform?.Name,
                 Lti13ToolPlatformVariables.InstanceDescription when customPermissions.ToolPlatformProductInstanceDescription => platform?.Description,
                 Lti13ToolPlatformVariables.InstanceUrl when customPermissions.ToolPlatformProductInstanceUrl => platform?.Url?.ToString(),

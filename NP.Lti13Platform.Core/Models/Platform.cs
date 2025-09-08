@@ -10,7 +10,7 @@ public class Platform
     /// <summary>
     /// A stable locally unique to the iss identifier for an instance of the tool platform. The value of guid is a case-sensitive string that MUST NOT exceed 255 ASCII characters in length. The use of Universally Unique IDentifier (UUID) defined in [RFC4122] is recommended.
     /// </summary>
-    public required string Guid { get; set; }
+    public Guid Guid { get; set; } = Guid.Empty;
 
     /// <summary>
     /// Administrative contact email for the platform instance.
