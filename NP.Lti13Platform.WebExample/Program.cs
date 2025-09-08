@@ -136,7 +136,7 @@ namespace NP.Lti13Platform.WebExample
                 OidcInitiationUrl = new Uri("https://saltire.lti.app/tool"),
                 LaunchUrl = new Uri("https://saltire.lti.app/tool"),
                 DeepLinkUrl = new Uri("https://saltire.lti.app/tool"),
-                Jwks = "https://saltire.lti.app/tool/jwks/1e49d5cbb9f93e9bb39a4c3cfcda929d",
+                Jwks = (Jwks)Jwks.Create("https://saltire.lti.app/tool/jwks/1e49d5cbb9f93e9bb39a4c3cfcda929d"),
                 ServiceScopes =
                 [
                     AssignmentGradeServices.ServiceScopes.LineItem,
@@ -220,9 +220,9 @@ namespace NP.Lti13Platform.WebExample
             return Task.FromResult<IMembership?>(Memberships.SingleOrDefault(m => m.ContextId == contextId && m.UserId == userId));
         }
 
-        Task<IResourceLink?> ILti13CoreDataService.GetResourceLinkAsync(string resourceLinkId, CancellationToken cancellationToken)
+        Task<IResourceLink?> ILti13CoreDataService.GetResourceLinkAsync(string resourceLinkId, string deploymentId, CancellationToken cancellationToken)
         {
-            return Task.FromResult<IResourceLink?>(ResourceLinks.SingleOrDefault(r => r.ResourceLinkId == resourceLinkId));
+            return Task.FromResult<IResourceLink?>(ResourceLinks.SingleOrDefault(r => r.ResourceLinkId == resourceLinkId && r.DeploymentId == deploymentId));
         }
 
         Task<IPartialList<ILineItem>> ILti13CoreDataService.GetLineItemsAsync(string deploymentId, string contextId, int pageIndex, int limit, string? resourceId, string? resourceLinkId, string? tag, CancellationToken cancellationToken)
@@ -261,9 +261,9 @@ namespace NP.Lti13Platform.WebExample
             }
         }
 
-        async Task<IAttempt?> ILti13CoreDataService.GetAttemptAsync(string resourceLinkId, string userId, CancellationToken cancellationToken)
+        async Task<IAttempt?> ILti13CoreDataService.GetLatestAttemptAsync(string deploymentId, string lineItemId, string userId, CancellationToken cancellationToken)
         {
-            return await Task.FromResult<IAttempt?>(Attempts.SingleOrDefault(a => a.ResourceLinkId == resourceLinkId && a.UserId == userId));
+            return await Task.FromResult<IAttempt?>(Attempts.OrderBy(a => a.AttemptNumber).FirstOrDefault(a => a.DeploymentId == deploymentId && a.LineItemId == lineItemId && a.UserId == userId));
         }
 
         Task<IPartialList<IGrade>> ILti13AssignmentGradeDataService.GetGradesAsync(string lineItemId, int pageIndex, int limit, string? userId, CancellationToken cancellationToken)
@@ -277,9 +277,9 @@ namespace NP.Lti13Platform.WebExample
             });
         }
 
-        Task<IGrade?> ILti13CoreDataService.GetGradeAsync(string lineItemId, string userId, CancellationToken cancellationToken)
+        Task<IGrade?> ILti13CoreDataService.GetGradeAsync(string deploymentId, string lineItemId, string userId, CancellationToken cancellationToken)
         {
-            return Task.FromResult<IGrade?>(Grades.SingleOrDefault(g => g.LineItemId == lineItemId && g.UserId == userId));
+            return Task.FromResult<IGrade?>(Grades.SingleOrDefault(g => g.DeploymentId == deploymentId && g.LineItemId == lineItemId && g.UserId == userId));
         }
 
         Task ILti13AssignmentGradeDataService.SaveGradeAsync(IGrade grade, CancellationToken cancellationToken)
@@ -297,9 +297,9 @@ namespace NP.Lti13Platform.WebExample
             return Task.CompletedTask;
         }
 
-        Task<IServiceToken?> ILti13CoreDataService.GetServiceTokenAsync(string toolId, string serviceTokenId, CancellationToken cancellationToken)
+        Task<IServiceToken?> ILti13CoreDataService.GetServiceTokenAsync(string serviceTokenId, CancellationToken cancellationToken)
         {
-            return Task.FromResult<IServiceToken?>(ServiceTokens.FirstOrDefault(x => x.ToolId == toolId && x.ServiceTokenId == serviceTokenId));
+            return Task.FromResult<IServiceToken?>(ServiceTokens.FirstOrDefault(x => x.ServiceTokenId == serviceTokenId));
         }
 
         Task ILti13CoreDataService.SaveServiceTokenAsync(IServiceToken serviceToken, CancellationToken cancellationToken)

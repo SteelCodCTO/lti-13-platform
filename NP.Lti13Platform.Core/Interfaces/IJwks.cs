@@ -9,13 +9,6 @@ namespace NP.Lti13Platform.Core.Interfaces;
 /// <returns>An instance of Jwks depending on the type of string provided.</returns>
 public interface IJwks
 {
-    ///// <summary>
-    ///// Create an instance of Jwks using the provided key or uri.
-    ///// </summary>
-    ///// <param name="keyOrUri">The public key or JWKS uri to use.</param>
-    ///// <returns>An instance of Jwks depending on the type of string provided.</returns>
-    //IJwks Create(string keyOrUri);
-
     /// <summary>
     /// Gets the security keys asynchronously.
     /// </summary>

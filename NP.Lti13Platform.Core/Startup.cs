@@ -263,7 +263,7 @@ public static class Startup
                 }
                 else
                 {
-                    var serviceToken = await dataService.GetServiceTokenAsync(tool.ToolId, validatedToken.SecurityToken.Id, cancellationToken);
+                    var serviceToken = await dataService.GetServiceTokenAsync(validatedToken.SecurityToken.Id, cancellationToken);
                     if (serviceToken?.Expiration > DateTime.UtcNow)
                     {
                         return Results.BadRequest(new LtiBadRequest { Error = INVALID_REQUEST, Error_Description = "jti has already been used and is not expired", Error_Uri = AUTH_SPEC_URI });
@@ -405,7 +405,7 @@ public static class Startup
 
         var context = string.IsNullOrWhiteSpace(contextId) ? null : await dataService.GetContextAsync(contextId, cancellationToken);
 
-        var resourceLink = string.IsNullOrWhiteSpace(resourceLinkId) ? null : await dataService.GetResourceLinkAsync(resourceLinkId, cancellationToken);
+        var resourceLink = string.IsNullOrWhiteSpace(resourceLinkId) ? null : await dataService.GetResourceLinkAsync(resourceLinkId, deploymentId, cancellationToken);
 
         var tokenConfig = await tokenService.GetTokenConfigAsync(tool.ClientId, cancellationToken);
 

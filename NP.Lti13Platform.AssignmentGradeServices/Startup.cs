@@ -189,11 +189,8 @@ public static class Startup
 
                 if (!string.IsNullOrWhiteSpace(request.ResourceLinkId))
                 {
-                    var resourceLink = await coreDataService.GetResourceLinkAsync(request.ResourceLinkId, cancellationToken);
-                    if (resourceLink?.DeploymentId != deploymentId || resourceLink.ContextId != contextId)
-                    {
-                        return Results.NotFound();
-                    }
+                    var resourceLink = await coreDataService.GetResourceLinkAsync(request.ResourceLinkId, deploymentId, cancellationToken);
+                    if (resourceLink == null) return Results.NotFound();
                 }
 
                 var lineItemId = await assignmentGradeDataService.SaveLineItemAsync(new LineItem
@@ -544,12 +541,13 @@ public static class Startup
                 }
 
                 var isNew = false;
-                var grade = await coreDataService.GetGradeAsync(lineItemId, request.UserId, cancellationToken);
+                var grade = await coreDataService.GetGradeAsync(deploymentId, lineItemId, request.UserId, cancellationToken);
                 if (grade == null)
                 {
                     isNew = true;
                     grade = new Grade
                     {
+                        DeploymentId = deploymentId,
                         LineItemId = lineItemId,
                         UserId = request.UserId
                     };

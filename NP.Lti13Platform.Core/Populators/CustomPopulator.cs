@@ -70,7 +70,7 @@ public class CustomPopulator(ILti13PlatformService platformService, ILti13CoreDa
         }
 
         ILineItem? lineItem = null;
-        IAttempt? attempt = null;
+        IAttempt? latestAttempt = null;
         IGrade? grade = null;
         if (customDictionary.Values.Any(v => LineItemAttemptGradeVariables.Contains(v)) && scope.Context != null && scope.ResourceLink != null)
         {
@@ -79,10 +79,10 @@ public class CustomPopulator(ILti13PlatformService platformService, ILti13CoreDa
             {
                 lineItem = lineItems.Items.Single();
 
-                grade = await dataService.GetGradeAsync(lineItem.LineItemId, scope.UserScope.User.UserId, cancellationToken);
+                grade = await dataService.GetGradeAsync(scope.Deployment.DeploymentId, lineItem.LineItemId, scope.UserScope.User.UserId, cancellationToken);
+                latestAttempt = await dataService.GetLatestAttemptAsync(scope.Deployment.DeploymentId, lineItem.LineItemId, scope.UserScope.User.UserId, cancellationToken);
             }
 
-            attempt = await dataService.GetAttemptAsync(scope.ResourceLink.ResourceLinkId, scope.UserScope.User.UserId, cancellationToken);
         }
 
         var customPermissions = await dataService.GetCustomPermissions(scope.Deployment.DeploymentId, scope.Context?.ContextId, scope.UserScope.User.UserId, scope.UserScope.ActualUser?.UserId, cancellationToken);
@@ -119,13 +119,13 @@ public class CustomPopulator(ILti13PlatformService platformService, ILti13CoreDa
                 Lti13ResourceLinkVariables.Title when customPermissions.ResourceLinkTitle => scope.ResourceLink?.Title,
                 Lti13ResourceLinkVariables.Description when customPermissions.ResourceLinkDescription => scope.ResourceLink?.Text,
                 Lti13ResourceLinkVariables.AvailableStartDateTime when customPermissions.ResourceLinkAvailableStartDateTime => scope.ResourceLink?.AvailableStartDateTime?.ToString("O"),
-                Lti13ResourceLinkVariables.AvailableUserStartDateTime when customPermissions.ResourceLinkAvailableUserStartDateTime => attempt?.AvailableStartDateTime?.ToString("O"),
+                Lti13ResourceLinkVariables.AvailableUserStartDateTime when customPermissions.ResourceLinkAvailableUserStartDateTime => latestAttempt?.AvailableStartDateTime?.ToString("O"),
                 Lti13ResourceLinkVariables.AvailableEndDateTime when customPermissions.ResourceLinkAvailableEndDateTime => scope.ResourceLink?.AvailableEndDateTime?.ToString("O"),
-                Lti13ResourceLinkVariables.AvailableUserEndDateTime when customPermissions.ResourceLinkAvailableUserEndDateTime => attempt?.AvailableEndDateTime?.ToString("O"),
+                Lti13ResourceLinkVariables.AvailableUserEndDateTime when customPermissions.ResourceLinkAvailableUserEndDateTime => latestAttempt?.AvailableEndDateTime?.ToString("O"),
                 Lti13ResourceLinkVariables.SubmissionStartDateTime when customPermissions.ResourceLinkSubmissionStartDateTime => scope.ResourceLink?.SubmissionStartDateTime?.ToString("O"),
-                Lti13ResourceLinkVariables.SubmissionUserStartDateTime when customPermissions.ResourceLinkSubmissionUserStartDateTime => attempt?.SubmisstionStartDateTime?.ToString("O"),
+                Lti13ResourceLinkVariables.SubmissionUserStartDateTime when customPermissions.ResourceLinkSubmissionUserStartDateTime => latestAttempt?.SubmisstionStartDateTime?.ToString("O"),
                 Lti13ResourceLinkVariables.SubmissionEndDateTime when customPermissions.ResourceLinkSubmissionEndDateTime => scope.ResourceLink?.SubmissionEndDateTime?.ToString("O"),
-                Lti13ResourceLinkVariables.SubmissionUserEndDateTime when customPermissions.ResourceLinkSubmissionUserEndDateTime => attempt?.SubmissionEndDateTime?.ToString("O"),
+                Lti13ResourceLinkVariables.SubmissionUserEndDateTime when customPermissions.ResourceLinkSubmissionUserEndDateTime => latestAttempt?.SubmissionEndDateTime?.ToString("O"),
                 Lti13ResourceLinkVariables.LineItemReleaseDateTime when customPermissions.ResourceLinkLineItemReleaseDateTime => lineItem?.GradesReleasedDateTime?.ToString("O"),
                 Lti13ResourceLinkVariables.LineItemUserReleaseDateTime when customPermissions.ResourceLinkLineItemUserReleaseDateTime => grade?.ReleaseDateTime?.ToString("O"),
                 Lti13ResourceLinkVariables.IdHistory when customPermissions.ResourceLinkIdHistory => scope.ResourceLink?.ClonedIdHistory != null ? string.Join(',', scope.ResourceLink.ClonedIdHistory) : string.Empty,

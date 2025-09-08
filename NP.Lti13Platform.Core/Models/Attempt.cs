@@ -8,14 +8,24 @@ namespace NP.Lti13Platform.Core.Models;
 public class Attempt: IAttempt
 {
     /// <summary>
-    /// The unique identifier of the resource link for which this attempt is made.
+    /// The unique identifier of the deployment
     /// </summary>
-    public required string ResourceLinkId { get; set; }
+    public required string DeploymentId { get; set; }
+
+    /// <summary>
+    /// The unique identifier of the line item for which this attempt is made.
+    /// </summary>
+    public required string LineItemId { get; set; }
 
     /// <summary>
     /// The unique identifier of the user making the attempt.
     /// </summary>
     public required string UserId { get; set; }
+
+    /// <summary>
+    /// Which number attempt this is for the user. 1 = first
+    /// </summary>
+    public int AttemptNumber { get; set; } = 0; // tool-side concept; not part of the spec
 
     /// <summary>
     /// Date and time when the attempt becomes available.

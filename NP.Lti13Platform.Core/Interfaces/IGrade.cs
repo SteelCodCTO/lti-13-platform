@@ -7,6 +7,11 @@
 public interface IGrade
 {
     /// <summary>
+    /// Gets or sets the identifier of the deployment.
+    /// </summary>
+    public string DeploymentId { get; set; }
+
+    /// <summary>
     /// Gets or sets the identifier of the line item.
     /// References the line item in the gradebook to which this grade belongs.
     /// </summary>

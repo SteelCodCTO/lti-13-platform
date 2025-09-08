@@ -6,9 +6,19 @@
 public interface IAttempt
 {
     /// <summary>
-    /// The unique identifier of the resource link for which this attempt is made.
+    /// The unique identifier of the deployment
     /// </summary>
-    public string ResourceLinkId { get; set; }
+    public string DeploymentId { get; set; }
+
+    /// <summary>
+    /// The unique identifier of the line item for which this attempt is made.
+    /// </summary>
+    public string LineItemId { get; set; }
+
+    ///// <summary>
+    ///// The unique identifier of the resource link for which this attempt is made.
+    ///// </summary>
+    //public string ResourceLinkId { get; set; }
 
     /// <summary>
     /// The unique identifier of the user making the attempt.

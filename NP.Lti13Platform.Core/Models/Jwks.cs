@@ -9,14 +9,15 @@ namespace NP.Lti13Platform.Core.Models;
 /// </summary>
 public abstract class Jwks: IJwks
 {
-    /// <summary>
-    /// Create an instance of Jwks using the provided key or uri.
-    /// </summary>
-    /// <param name="keyOrUri">The public key or JWKS uri to use.</param>
-    /// <returns>An instance of Jwks depending on the type of string provided.</returns>
-    static Jwks Create(string keyOrUri) => Uri.IsWellFormedUriString(keyOrUri, UriKind.Absolute) ?
+    ///// <summary>
+    ///// Create an instance of Jwks using the provided key or uri.
+    ///// </summary>
+    ///// <param name="keyOrUri">The public key or JWKS uri to use.</param>
+    ///// <returns>An instance of Jwks depending on the type of string provided.</returns>
+    public static IJwks Create(string keyOrUri) => Uri.IsWellFormedUriString(keyOrUri, UriKind.Absolute) ?
             new JwksUri { Uri = keyOrUri } :
             new JwtPublicKey { PublicKey = keyOrUri };
+
 
     /// <summary>
     /// Gets the security keys asynchronously.
@@ -25,11 +26,11 @@ public abstract class Jwks: IJwks
     /// <returns>A collection of security keys.</returns>
     public abstract Task<IEnumerable<SecurityKey>> GetKeysAsync(CancellationToken cancellationToken = default);
 
-    /// <summary>
-    /// Implicitly converts a string to a <see cref="Jwks"/> instance.
-    /// </summary>
-    /// <param name="keyOrUri">The public key or JWKS URI.</param>
-    public static implicit operator Jwks(string keyOrUri) => Create(keyOrUri);
+    ///// <summary>
+    ///// Implicitly converts a string to a <see cref="Jwks"/> instance.
+    ///// </summary>
+    ///// <param name="keyOrUri">The public key or JWKS URI.</param>
+    //public static implicit operator Jwks(string keyOrUri) => Create(keyOrUri);
 }
 
 /// <summary>

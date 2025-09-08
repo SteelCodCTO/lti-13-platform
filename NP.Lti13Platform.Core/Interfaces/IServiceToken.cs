@@ -16,6 +16,11 @@ public interface IServiceToken
     public string ToolId { get; set; }
 
     /// <summary>
+    /// The hash for the given scopes.
+    /// </summary>
+    public string ScopesHash { get; set; }
+
+    /// <summary>
     /// The expiration date and time of the service token as defined by the LTI 1.3 specification.
     /// </summary>
     public DateTimeOffset Expiration { get; set; }

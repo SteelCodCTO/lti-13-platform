@@ -64,7 +64,7 @@ namespace NP.Lti13Platform.Core.Services
         /// <param name="resourceLinkId">The resource link ID.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The resource link.</returns>
-        Task<IResourceLink?> GetResourceLinkAsync(string resourceLinkId, CancellationToken cancellationToken = default);
+        Task<IResourceLink?> GetResourceLinkAsync(string resourceLinkId, string deploymentId, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Gets a paginated list of line items.
@@ -81,31 +81,32 @@ namespace NP.Lti13Platform.Core.Services
         Task<IPartialList<ILineItem>> GetLineItemsAsync(string deploymentId, string contextId, int pageIndex, int limit, string? resourceId = null, string? resourceLinkId = null, string? tag = null, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Gets an attempt by resource link and user IDs.
+        /// Gets the most recent attempt by deployment ID, line item ID and user ID.
         /// </summary>
-        /// <param name="resourceLinkId">The resource link ID.</param>
+        /// <param name="deploymentId">The deployment ID.</param>
+        /// <param name="lineItemId">The line item ID.</param>
         /// <param name="userId">The user ID.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The attempt.</returns>
-        Task<IAttempt?> GetAttemptAsync(string resourceLinkId, string userId, CancellationToken cancellationToken = default);
+        Task<IAttempt?> GetLatestAttemptAsync(string deploymentId, string lineItemId, string userId, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Gets a grade by line item and user IDs.
         /// </summary>
+        /// <param name="deploymentId">The deployment ID.</param>
         /// <param name="lineItemId">The line item ID.</param>
         /// <param name="userId">The user ID.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The grade.</returns>
-        Task<IGrade?> GetGradeAsync(string lineItemId, string userId, CancellationToken cancellationToken = default);
+        Task<IGrade?> GetGradeAsync(string deploymentId, string lineItemId, string userId, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Gets a service token by tool and token IDs.
         /// </summary>
-        /// <param name="toolId">The tool ID.</param>
-        /// <param name="id">The token ID.</param>
+        /// <param name="serviceTokenId">The service token ID.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The service token.</returns>
-        Task<IServiceToken?> GetServiceTokenAsync(string toolId, string id, CancellationToken cancellationToken = default);
+        Task<IServiceToken?> GetServiceTokenAsync(string serviceTokenId, CancellationToken cancellationToken = default);
         /// <summary>
         /// Saves a service token.
         /// </summary>

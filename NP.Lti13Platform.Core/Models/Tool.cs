@@ -22,6 +22,11 @@ public class Tool: ITool
     public required string ClientId { get; set; }
 
     /// <summary>
+    /// Gets or sets the deployment ID for the tool.
+    /// </summary>
+    public string DeploymentId { get; set; }
+
+    /// <summary>
     /// Gets or sets the OIDC initiation URL for the tool.
     /// The URL to which the platform should send the OpenID Connect Authentication Request. This URL is used to initiate the LTI launch flow.
     /// </summary>
