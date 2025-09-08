@@ -269,7 +269,12 @@ public static class Startup
                         return Results.BadRequest(new LtiBadRequest { Error = INVALID_REQUEST, Error_Description = "jti has already been used and is not expired", Error_Uri = AUTH_SPEC_URI });
                     }
 
-                    await dataService.SaveServiceTokenAsync(new ServiceToken { ServiceTokenId = validatedToken.SecurityToken.Id, ToolId = tool.ToolId, Expiration = validatedToken.SecurityToken.ValidTo }, cancellationToken);
+                    await dataService.SaveServiceTokenAsync(new ServiceToken { 
+                        ServiceTokenId = validatedToken.SecurityToken.Id, 
+                        ToolId = tool.ToolId, 
+                        Expiration = validatedToken.SecurityToken.ValidTo,
+                        ScopesHash = string.Join(' ', (scopes?.OrderBy(s => s.ToLowerInvariant()).Select(s => s.ToLowerInvariant())) ?? []).GetHashCode()
+                    }, cancellationToken);
                 }
 
                 var privateKey = await dataService.GetPrivateKeyAsync(cancellationToken);
