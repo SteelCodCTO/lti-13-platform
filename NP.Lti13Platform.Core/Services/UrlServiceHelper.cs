@@ -25,7 +25,7 @@ public interface IUrlServiceHelper
     /// <param name="launchPresentation">The launch presentation override.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The resource link initiation URL.</returns>
-    Task<Uri> GetResourceLinkInitiationUrlAsync(ITool tool, string deploymentId, string contextId, ResourceLink resourceLink, string userId, bool isAnonymous, string? actualUserId = null, LaunchPresentationOverride? launchPresentation = null, CancellationToken cancellationToken = default);
+    Task<Uri> GetResourceLinkInitiationUrlAsync(ITool tool, string deploymentId, string contextId, IResourceLink resourceLink, string userId, bool isAnonymous, string? actualUserId = null, LaunchPresentationOverride? launchPresentation = null, CancellationToken cancellationToken = default);
     /// <summary>
     /// Gets a URL for an LTI message.
     /// </summary>
@@ -87,7 +87,7 @@ public interface IUrlServiceHelper
 public class UrlServiceHelper(ILti13TokenConfigService tokenService) : IUrlServiceHelper
 {
     /// <inheritdoc />
-    public async Task<Uri> GetResourceLinkInitiationUrlAsync(ITool tool, string deploymentId, string contextId, ResourceLink resourceLink, string userId, bool isAnonymous, string? actualUserId = null, LaunchPresentationOverride? launchPresentation = null, CancellationToken cancellationToken = default)
+    public async Task<Uri> GetResourceLinkInitiationUrlAsync(ITool tool, string deploymentId, string contextId, IResourceLink resourceLink, string userId, bool isAnonymous, string? actualUserId = null, LaunchPresentationOverride? launchPresentation = null, CancellationToken cancellationToken = default)
         => await GetUrlAsync(
             Lti13MessageType.LtiResourceLinkRequest,
             tool,
