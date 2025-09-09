@@ -11,36 +11,36 @@ public interface ITool
     /// Gets or sets the unique identifier for the tool.
     /// A locally assigned identifier used by the platform to refer to this tool. This may differ from the client ID which is used for OAuth 2.0 authentication.
     /// </summary>
-    public string ToolId { get; set; }
+    public string ToolId { get; }
 
     /// <summary>
     /// Gets or sets the client identifier for the tool.
     /// The OAuth 2.0 client identifier that the tool uses when making requests to the platform. This is a required value as per the LTI 1.3 specification and corresponds to the client_id parameter in OpenID Connect and OAuth 2.0.
     /// </summary>
-    public string ClientId { get; set; }
+    public string ClientId { get; }
 
     /// <summary>
     /// Gets or sets the deployment ID for the tool.
     /// </summary>
-    public string DeploymentId { get; set; }
+    public string DeploymentId { get; }
 
     /// <summary>
     /// Gets or sets the OIDC initiation URL for the tool.
     /// The URL to which the platform should send the OpenID Connect Authentication Request. This URL is used to initiate the LTI launch flow.
     /// </summary>
-    public Uri OidcInitiationUrl { get; set; }
+    public Uri OidcInitiationUrl { get; }
 
     /// <summary>
     /// Gets or sets the deep link URL for the tool.
     /// The URL that the platform should use when launching the tool in deep linking mode. This is used for content selection as defined in the LTI Deep Linking specification.
     /// </summary>
-    public Uri DeepLinkUrl { get; set; }
+    public Uri DeepLinkUrl { get; }
 
     /// <summary>
     /// Gets or sets the launch URL for the tool.
     /// The URL that the platform should use when launching the tool for a standard LTI launch. This is the target of the OpenID Connect Authentication Response.
     /// </summary>
-    public Uri LaunchUrl { get; set; }
+    public Uri LaunchUrl { get; }
 
     /// <summary>
     /// Gets the redirect URLs for the tool.
@@ -58,11 +58,11 @@ public interface ITool
     /// Gets or sets the custom parameters for the tool.
     /// A set of custom key-value pairs that should be included in LTI messages to this tool. These parameters are defined at the tool level and apply to all launches of the tool.
     /// </summary>
-    public IDictionary<string, string>? Custom { get; set; }
+    public IDictionary<string, string>? Custom { get; }
 
     /// <summary>
     /// Gets or sets the service scopes for the tool.
     /// The collection of LTI Advantage service scopes that this tool is authorized to use. These define which LTI services (Assignment and Grade Services, Names and Roles, etc.) this tool is allowed to access.
     /// </summary>
-    public IEnumerable<string> ServiceScopes { get; set; }
+    public IEnumerable<string> ServiceScopes { get; }
 }

@@ -8,15 +8,15 @@ public interface IDeployment
     /// <summary>
     /// The unique identifier for the deployment as assigned by the platform. This value is used to identify the platform-tool integration governing the message.
     /// </summary>
-    public string DeploymentId { get; set; }
+    public string DeploymentId { get; }
 
     /// <summary>
     /// The unique identifier for the tool associated with this deployment.
     /// </summary>
-    public string ToolId { get; set; }
+    public string ToolId { get; }
 
     /// <summary>
     /// A map of key/value custom parameters for this deployment. These parameters MUST be included in LTI messages if present. Map values must be strings. Note that "empty-string" is a valid value (""); however, null is not a valid value.
     /// </summary>
-    public IDictionary<string, string>? Custom { get; set; }
+    public IDictionary<string, string>? Custom { get; }
 }

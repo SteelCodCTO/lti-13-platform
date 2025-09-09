@@ -10,19 +10,19 @@ public interface ILineItem
     /// Gets or sets the ID of the line item.
     /// A unique identifier for the line item as assigned by the platform. The line item ID should remain consistent across sessions and for the lifetime of the line item.
     /// </summary>
-    public string LineItemId { get; set; }
+    public string LineItemId { get; }
 
     /// <summary>
     /// Gets or sets the deployment ID.
     /// Identifies the platform-tool integration that this line item is associated with. This value is provided by the platform when the tool is installed/registered.
     /// </summary>
-    public string DeploymentId { get; set; }
+    public string DeploymentId { get; }
 
     /// <summary>
     /// Gets or sets the context ID.
     /// The unique identifier of the context (course/section) with which this line item is associated. This links the line item to a specific context in the learning platform.
     /// </summary>
-    public string ContextId { get; set; }
+    public string ContextId { get; }
 
     /// <summary>
     /// Gets or sets the maximum score for the line item.
@@ -40,7 +40,7 @@ public interface ILineItem
     /// Gets or sets the resource link ID.
     /// The unique identifier of the resource link that originated this line item, if applicable. Can be null for line items not associated with a specific resource link.
     /// </summary>
-    public string? ResourceLinkId { get; set; }
+    public string? ResourceLinkId { get; }
 
     /// <summary>
     /// Gets or sets the resource ID.

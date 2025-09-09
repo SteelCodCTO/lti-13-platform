@@ -273,7 +273,10 @@ public static class Startup
                         ServiceTokenId = validatedToken.SecurityToken.Id, 
                         ToolId = tool.ToolId, 
                         Expiration = validatedToken.SecurityToken.ValidTo,
-                        ScopesHash = string.Join(' ', (scopes?.OrderBy(s => s.ToLowerInvariant()).Select(s => s.ToLowerInvariant())) ?? []).GetHashCode()
+                        ScopesHash = string.Join(' ', (scopes?.OrderBy(s => s.ToLowerInvariant()).Select(s => s.ToLowerInvariant())) ?? []).GetHashCode(),
+                        Scopes = request.Scope, // 'todo: use the scopes variable instead?
+                        TokenType = validatedToken.TokenType,
+                        RefreshToken = string.Empty // 'todo: wire this up?
                     }, cancellationToken);
                 }
 
@@ -288,7 +291,7 @@ public static class Startup
                     SigningCredentials = new SigningCredentials(privateKey, SecurityAlgorithms.RsaSha256),
                     Claims = new Dictionary<string, object>
                     {
-                        { ClaimTypes.Role, scopes }
+                        { ClaimTypes.Role, scopes ?? [] }
                     }
                 });
 
@@ -297,7 +300,7 @@ public static class Startup
                     AccessToken = token,
                     TokenType = "bearer",
                     ExpiresIn = tokenConfig.AccessTokenExpirationSeconds,
-                    Scope = string.Join(' ', scopes)
+                    Scope = string.Join(' ', scopes ?? [])
                 });
             })
             .WithName(RouteNames.TOKEN)

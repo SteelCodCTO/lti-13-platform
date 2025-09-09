@@ -10,13 +10,13 @@ public interface IResourceLink
     /// Gets or sets the ID of the resource link.
     /// The stable unique identifier for the link as provided by the LMS platform. This value must be a UUID and must be immutable for a resource link.
     /// </summary>
-    public string ResourceLinkId { get; set; }
+    public string ResourceLinkId { get; }
 
     /// <summary>
     /// Gets or sets the deployment ID.
     /// Identifies the platform-tool integration governing the message. This value is provided by the platform when the tool is installed/registered.
     /// </summary>
-    public string DeploymentId { get; set; }
+    public string DeploymentId { get; }
 
     ///// <summary>
     ///// Gets or sets the context ID.
@@ -28,45 +28,45 @@ public interface IResourceLink
     /// Gets or sets the URL of the resource link.
     /// The fully qualified URL of the resource that the link refers to.
     /// </summary>
-    public Uri? Url { get; set; }
+    public Uri? Url { get; }
 
     /// <summary>
     /// String, plain text to use as the title or heading for content.
     /// </summary>
-    public string? Title { get; set; }
+    public string? Title { get; }
 
     /// <summary>
     /// String, plain text description of the content item intended to be displayed to all users who can access the item.
     /// </summary>
-    public string? Text { get; set; }
+    public string? Text { get; }
 
     /// <summary>
     /// date and time when the link becomes accessible.
     /// </summary>
-    public DateTimeOffset? AvailableStartDateTime { get; set; }
+    public DateTimeOffset? AvailableStartDateTime { get;  }
 
     /// <summary>
     /// date and time when the link stops being accessible.
     /// </summary>
-    public DateTimeOffset? AvailableEndDateTime { get; set; }
+    public DateTimeOffset? AvailableEndDateTime { get;  }
 
     /// <summary>
     /// Date and time when the link can start receiving submissions.
     /// </summary>
-    public DateTimeOffset? SubmissionStartDateTime { get; set; }
+    public DateTimeOffset? SubmissionStartDateTime { get;  }
 
     /// <summary>
     /// Date and time when the link stops accepting submissions.
     /// </summary>
-    public DateTimeOffset? SubmissionEndDateTime { get; set; }
+    public DateTimeOffset? SubmissionEndDateTime { get;  }
 
     /// <summary>
     /// The list of resource links that this resource link was copied from. Enables platforms to maintain continuity when a link is copied.
     /// </summary>
-    public IEnumerable<string>? ClonedIdHistory { get; set; }
+    public IEnumerable<string>? ClonedIdHistory { get;  }
 
     /// <summary>
     /// A map of key/value custom parameters. Those parameters MUST be included in the LtiResourceLinkRequest payload. Value may include substitution parameters as defined in the LTI Core Specification. Map values must be strings. Note that "empty-string" is a valid value (""); however, null is not a valid value.
     /// </summary>
-    public IDictionary<string, string>? Custom { get; set; }
+    public IDictionary<string, string>? Custom { get;  }
 }

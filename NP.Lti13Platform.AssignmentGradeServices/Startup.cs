@@ -338,7 +338,7 @@ public static class Startup
 
                 lineItem.Label = request.Label;
                 lineItem.ResourceId = request.ResourceId;
-                lineItem.ResourceLinkId = request.ResourceLinkId;
+                //lineItem.ResourceLinkId = request.ResourceLinkId; don't need to re-assign, can't be changed
                 lineItem.ScoreMaximum = request.ScoreMaximum;
                 lineItem.Tag = request.Tag;
                 lineItem.GradesReleased = request.GradesReleased;

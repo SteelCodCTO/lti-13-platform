@@ -23,6 +23,21 @@ public class ServiceToken: IServiceToken
     public int ScopesHash { get; set; }
 
     /// <summary>
+    /// The space-delimited list of scopes as defined by the LTI 1.3 specification.
+    /// </summary>
+    public string Scopes { get; set; }
+
+    /// <summary>
+    /// The token used to refresh (if applicable) the service token as defined by the LTI 1.3 specification.
+    /// </summary>
+    public string RefreshToken { get; set; }
+
+    /// <summary>
+    /// "Bearer", etc. as defined by the LTI 1.3 specification.
+    /// </summary>
+    public string TokenType { get; set; }
+
+    /// <summary>
     /// The expiration date and time of the service token as defined by the LTI 1.3 specification.
     /// </summary>
     public required DateTimeOffset Expiration { get; set; }

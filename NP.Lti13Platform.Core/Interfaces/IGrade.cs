@@ -9,18 +9,18 @@ public interface IGrade
     /// <summary>
     /// Gets or sets the identifier of the deployment.
     /// </summary>
-    public string DeploymentId { get; set; }
+    public string DeploymentId { get; }
 
     /// <summary>
     /// Gets or sets the identifier of the line item.
     /// References the line item in the gradebook to which this grade belongs.
     /// </summary>
-    public string LineItemId { get; set; }
+    public string LineItemId { get; }
 
     /// <summary>
     /// The user to whom this grade applies. This should correspond to a user ID in the platform.
     /// </summary>
-    public string UserId { get; set; }
+    public string UserId { get; }
 
     /// <summary>
     /// The user who created or last modified this grade (typically an instructor or grader).

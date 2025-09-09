@@ -248,15 +248,17 @@ namespace NP.Lti13Platform.WebExample
             if (lineItem == null) throw new ArgumentNullException(nameof(lineItem));
 
             var existingLineItem = LineItems.SingleOrDefault(x => x.LineItemId == lineItem.LineItemId);
+            var objLineItem = LineItem.Clone(lineItem); // make sure we have a concrete type
+
             if (existingLineItem != null)
             {
-                LineItems[LineItems.IndexOf(existingLineItem)] = LineItem.Clone(lineItem);
+                LineItems[LineItems.IndexOf(existingLineItem)] = objLineItem;
                 return Task.FromResult(lineItem.LineItemId);
             }
             else
             {
-                lineItem.LineItemId = Guid.NewGuid().ToString();
-                LineItems.Add(LineItem.Clone(lineItem));
+                objLineItem.LineItemId = Guid.NewGuid().ToString();
+                LineItems.Add(objLineItem);
                 return Task.FromResult(lineItem.LineItemId);
             }
         }
