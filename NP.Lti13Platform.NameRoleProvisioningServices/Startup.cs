@@ -208,8 +208,8 @@ public static class Startup
                 var messages = new Dictionary<string, IEnumerable<NameRoleProvisioningMessage>>();
                 if (!string.IsNullOrWhiteSpace(rlid))
                 {
-                    var resourceLink = await coreDataService.GetResourceLinkAsync(rlid, deploymentId, cancellationToken);
-                    if (resourceLink == null || resourceLink.DeploymentId != deploymentId)
+                    var resourceLink = await coreDataService.GetResourceLinkAsync(rlid, cancellationToken);
+                    if (resourceLink == null || resourceLink.ContextId != contextId)
                     {
                         return Results.BadRequest(new LtiBadRequest { Error = "resource link unavailable", Error_Description = "resource link does not exist in the context", Error_Uri = "https://www.imsglobal.org/spec/lti-nrps/v2p0#access-restriction" });
                     }

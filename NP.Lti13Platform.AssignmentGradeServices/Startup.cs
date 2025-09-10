@@ -189,7 +189,7 @@ public static class Startup
 
                 if (!string.IsNullOrWhiteSpace(request.ResourceLinkId))
                 {
-                    var resourceLink = await coreDataService.GetResourceLinkAsync(request.ResourceLinkId, deploymentId, cancellationToken);
+                    var resourceLink = await coreDataService.GetResourceLinkAsync(request.ResourceLinkId, cancellationToken);
                     if (resourceLink == null) return Results.NotFound();
                 }
 

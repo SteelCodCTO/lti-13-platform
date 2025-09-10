@@ -64,12 +64,11 @@ namespace NP.Lti13Platform.Core.Services
         /// <param name="resourceLinkId">The resource link ID.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The resource link.</returns>
-        Task<IResourceLink?> GetResourceLinkAsync(string resourceLinkId, string deploymentId, CancellationToken cancellationToken = default);
+        Task<IResourceLink?> GetResourceLinkAsync(string resourceLinkId, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Gets a paginated list of line items.
         /// </summary>
-        /// <param name="deploymentId">The deployment ID.</param>
         /// <param name="contextId">The context ID.</param>
         /// <param name="pageIndex">The page index.</param>
         /// <param name="limit">The page size.</param>
@@ -88,7 +87,7 @@ namespace NP.Lti13Platform.Core.Services
         /// <param name="userId">The user ID.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The attempt.</returns>
-        Task<IAttempt?> GetLatestAttemptAsync(string deploymentId, string lineItemId, string userId, CancellationToken cancellationToken = default);
+        Task<IAttempt?> GetLatestAttemptAsync(string lineItemId, string userId, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Gets a grade by line item and user IDs.

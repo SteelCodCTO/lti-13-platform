@@ -12,17 +12,17 @@ public interface IResourceLink
     /// </summary>
     public string ResourceLinkId { get; }
 
-    /// <summary>
-    /// Gets or sets the deployment ID.
-    /// Identifies the platform-tool integration governing the message. This value is provided by the platform when the tool is installed/registered.
-    /// </summary>
-    public string DeploymentId { get; }
-
     ///// <summary>
-    ///// Gets or sets the context ID.
-    ///// An opaque identifier that uniquely identifies the context from which the resource link was launched.
+    ///// Gets or sets the deployment ID.
+    ///// Identifies the platform-tool integration governing the message. This value is provided by the platform when the tool is installed/registered.
     ///// </summary>
-    //public string ContextId { get; set; }
+    //public string DeploymentId { get; }
+
+    /// <summary>
+    /// Gets or sets the context ID.
+    /// An opaque identifier that uniquely identifies the context from which the resource link was launched.
+    /// </summary>
+    public string ContextId { get; }
 
     /// <summary>
     /// Gets or sets the URL of the resource link.

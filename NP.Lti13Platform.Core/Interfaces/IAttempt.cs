@@ -5,10 +5,10 @@
 /// </summary>
 public interface IAttempt
 {
-    /// <summary>
-    /// The unique identifier of the deployment
-    /// </summary>
-    public string DeploymentId { get; }
+    ///// <summary>
+    ///// The unique identifier of the deployment
+    ///// </summary>
+    //public string DeploymentId { get; }
 
     /// <summary>
     /// The unique identifier of the line item for which this attempt is made.

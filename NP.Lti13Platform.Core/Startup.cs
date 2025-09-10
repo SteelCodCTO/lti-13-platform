@@ -413,7 +413,7 @@ public static class Startup
 
         var context = string.IsNullOrWhiteSpace(contextId) ? null : await dataService.GetContextAsync(contextId, cancellationToken);
 
-        var resourceLink = string.IsNullOrWhiteSpace(resourceLinkId) ? null : await dataService.GetResourceLinkAsync(resourceLinkId, deploymentId, cancellationToken);
+        var resourceLink = string.IsNullOrWhiteSpace(resourceLinkId) ? null : await dataService.GetResourceLinkAsync(resourceLinkId, cancellationToken);
 
         var tokenConfig = await tokenService.GetTokenConfigAsync(tool.ClientId, cancellationToken);
 

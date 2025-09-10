@@ -7,10 +7,10 @@ namespace NP.Lti13Platform.Core.Models;
 /// </summary>
 public class Attempt: IAttempt
 {
-    /// <summary>
-    /// The unique identifier of the deployment
-    /// </summary>
-    public required string DeploymentId { get; set; }
+    ///// <summary>
+    ///// The unique identifier of the deployment
+    ///// </summary>
+    //public required string DeploymentId { get; set; }
 
     /// <summary>
     /// The unique identifier of the line item for which this attempt is made.

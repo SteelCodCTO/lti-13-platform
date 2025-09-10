@@ -81,7 +81,7 @@ public class CustomPopulator(ILti13PlatformService platformService, ILti13CoreDa
                 lineItem = lineItems.Items.Single();
 
                 grade = await dataService.GetGradeAsync(lineItem.LineItemId, scope.UserScope.User.UserId, cancellationToken);
-                latestAttempt = await dataService.GetLatestAttemptAsync(scope.Deployment.DeploymentId, lineItem.LineItemId, scope.UserScope.User.UserId, cancellationToken);
+                latestAttempt = await dataService.GetLatestAttemptAsync(lineItem.LineItemId, scope.UserScope.User.UserId, cancellationToken);
             }
 
         }
