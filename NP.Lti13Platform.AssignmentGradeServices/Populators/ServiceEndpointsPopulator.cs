@@ -67,7 +67,7 @@ public class ServiceEndpointsPopulator(LinkGenerator linkGenerator, ILti13CoreDa
 
             if (scope.ResourceLink != null)
             {
-                var lineItems = await dataService.GetLineItemsAsync(scope.Deployment.DeploymentId, scope.Context.ContextId, 0, 1, null, scope.ResourceLink.ResourceLinkId, null, cancellationToken);
+                var lineItems = await dataService.GetLineItemsAsync(scope.Context.ContextId, 0, 1, null, scope.ResourceLink.ResourceLinkId, null, cancellationToken);
                 if (lineItems.TotalItems == 1)
                 {
                     lineItemId = lineItems.Items.FirstOrDefault()?.LineItemId;

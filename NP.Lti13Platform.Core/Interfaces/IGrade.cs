@@ -6,10 +6,10 @@
 /// </summary>
 public interface IGrade
 {
-    /// <summary>
-    /// Gets or sets the identifier of the deployment.
-    /// </summary>
-    public string DeploymentId { get; }
+    ///// <summary>
+    ///// Gets or sets the identifier of the deployment.
+    ///// </summary>
+    //public string DeploymentId { get; }
 
     /// <summary>
     /// Gets or sets the identifier of the line item.

@@ -8,10 +8,10 @@ namespace NP.Lti13Platform.Core.Models;
 /// </summary>
 public class Grade: IGrade
 {
-    /// <summary>
-    /// Gets or sets the identifier of the deployment.
-    /// </summary>
-    public required string DeploymentId { get; set; }
+    ///// <summary>
+    ///// Gets or sets the identifier of the deployment.
+    ///// </summary>
+    //public required string DeploymentId { get; set; }
 
     /// <summary>
     /// Gets or sets the identifier of the line item.
@@ -81,7 +81,6 @@ public class Grade: IGrade
     {
         return new Grade
         {
-            DeploymentId = li.DeploymentId,
             LineItemId = li.LineItemId,
             UserId = li.UserId,
             ScoringUserId = li.ScoringUserId,

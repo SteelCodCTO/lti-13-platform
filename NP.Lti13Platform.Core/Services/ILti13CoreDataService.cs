@@ -78,7 +78,7 @@ namespace NP.Lti13Platform.Core.Services
         /// <param name="tag">The tag.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A partial list of line items.</returns>
-        Task<IPartialList<ILineItem>> GetLineItemsAsync(string deploymentId, string contextId, int pageIndex, int limit, string? resourceId = null, string? resourceLinkId = null, string? tag = null, CancellationToken cancellationToken = default);
+        Task<IPartialList<ILineItem>> GetLineItemsAsync(string contextId, int pageIndex, int limit, string? resourceId = null, string? resourceLinkId = null, string? tag = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Gets the most recent attempt by deployment ID, line item ID and user ID.
@@ -93,12 +93,11 @@ namespace NP.Lti13Platform.Core.Services
         /// <summary>
         /// Gets a grade by line item and user IDs.
         /// </summary>
-        /// <param name="deploymentId">The deployment ID.</param>
         /// <param name="lineItemId">The line item ID.</param>
         /// <param name="userId">The user ID.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The grade.</returns>
-        Task<IGrade?> GetGradeAsync(string deploymentId, string lineItemId, string userId, CancellationToken cancellationToken = default);
+        Task<IGrade?> GetGradeAsync(string lineItemId, string userId, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Gets a service token by tool and token IDs.

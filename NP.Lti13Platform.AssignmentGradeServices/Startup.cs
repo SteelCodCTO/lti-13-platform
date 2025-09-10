@@ -103,7 +103,7 @@ public static class Startup
                     return Results.NotFound();
                 }
 
-                var lineItemsResponse = await coreDataService.GetLineItemsAsync(deploymentId, contextId, pageIndex, limit ?? int.MaxValue, resource_id, resource_link_id, tag, cancellationToken);
+                var lineItemsResponse = await coreDataService.GetLineItemsAsync(contextId, pageIndex, limit ?? int.MaxValue, resource_id, resource_link_id, tag, cancellationToken);
 
                 if (lineItemsResponse.TotalItems > 0 && limit.HasValue)
                 {
@@ -196,7 +196,6 @@ public static class Startup
                 var lineItemId = await assignmentGradeDataService.SaveLineItemAsync(new LineItem
                 {
                     LineItemId = string.Empty,
-                    DeploymentId = deploymentId,
                     ContextId = contextId,
                     Label = request.Label,
                     ResourceId = request.ResourceId,
@@ -258,7 +257,7 @@ public static class Startup
                 }
 
                 var lineItem = await assignmentGradeDataService.GetLineItemAsync(lineItemId, cancellationToken);
-                if (lineItem?.DeploymentId != deploymentId || lineItem.ContextId != contextId)
+                if (lineItem == null || lineItem.ContextId != contextId)
                 {
                     return Results.NotFound();
                 }
@@ -311,7 +310,7 @@ public static class Startup
                 }
 
                 var lineItem = await assignmentGradeDataService.GetLineItemAsync(lineItemId, cancellationToken);
-                if (lineItem?.DeploymentId != deploymentId || lineItem.ContextId != contextId)
+                if (lineItem == null || lineItem.ContextId != contextId)
                 {
                     return Results.NotFound();
                 }
@@ -396,7 +395,7 @@ public static class Startup
                 }
 
                 var lineItem = await assignmentGradeDataService.GetLineItemAsync(lineItemId, cancellationToken);
-                if (lineItem?.DeploymentId != deploymentId || lineItem.ContextId != contextId)
+                if (lineItem == null || lineItem.ContextId != contextId)
                 {
                     return Results.NotFound();
                 }
@@ -441,12 +440,12 @@ public static class Startup
                 }
 
                 var lineItem = await assignmentGradeDataService.GetLineItemAsync(lineItemId, cancellationToken);
-                if (lineItem?.DeploymentId != deploymentId || lineItem.ContextId != contextId)
+                if (lineItem == null || lineItem.ContextId != contextId)
                 {
                     return Results.NotFound();
                 }
 
-                var gradesResponse = await assignmentGradeDataService.GetGradesAsync(deploymentId, lineItemId, pageIndex, limit ?? int.MaxValue, user_id, cancellationToken);
+                var gradesResponse = await assignmentGradeDataService.GetGradesAsync(lineItemId, pageIndex, limit ?? int.MaxValue, user_id, cancellationToken);
 
                 if (gradesResponse.TotalItems > 0 && limit.HasValue)
                 {
@@ -515,7 +514,7 @@ public static class Startup
                 }
 
                 var lineItem = await assignmentGradeDataService.GetLineItemAsync(lineItemId, cancellationToken);
-                if (lineItem?.DeploymentId != deploymentId || lineItem.ContextId != contextId)
+                if (lineItem == null || lineItem.ContextId != contextId)
                 {
                     return Results.NotFound();
                 }
@@ -541,13 +540,12 @@ public static class Startup
                 }
 
                 var isNew = false;
-                var grade = await coreDataService.GetGradeAsync(deploymentId, lineItemId, request.UserId, cancellationToken);
+                var grade = await coreDataService.GetGradeAsync(lineItemId, request.UserId, cancellationToken);
                 if (grade == null)
                 {
                     isNew = true;
                     grade = new Grade
                     {
-                        DeploymentId = deploymentId,
                         LineItemId = lineItemId,
                         UserId = request.UserId
                     };

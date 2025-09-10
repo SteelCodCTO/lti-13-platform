@@ -66,12 +66,12 @@ public class CustomPopulator(ILti13CoreDataService dataService) : Populator<ICus
         IGrade? grade = null;
         if (customDictionary.Values.Any(v => LineItemAttemptGradeVariables.Contains(v)) && scope.Context != null && scope.ResourceLink != null)
         {
-            var lineItems = await dataService.GetLineItemsAsync(scope.Deployment.DeploymentId, scope.Context.ContextId, pageIndex: 0, limit: 1, resourceLinkId: scope.ResourceLink.ResourceLinkId, cancellationToken: cancellationToken);
+            var lineItems = await dataService.GetLineItemsAsync(scope.Context.ContextId, pageIndex: 0, limit: 1, resourceLinkId: scope.ResourceLink.ResourceLinkId, cancellationToken: cancellationToken);
             if (lineItems.TotalItems == 1)
             {
                 lineItem = lineItems.Items.First();
 
-                grade = await dataService.GetGradeAsync(scope.Deployment.DeploymentId, lineItem.LineItemId, scope.UserScope.User.UserId, cancellationToken);
+                grade = await dataService.GetGradeAsync(lineItem.LineItemId, scope.UserScope.User.UserId, cancellationToken);
                 latestAttempt = await dataService.GetLatestAttemptAsync(scope.Deployment.DeploymentId, lineItem.LineItemId, scope.UserScope.User.UserId, cancellationToken);
             }
 

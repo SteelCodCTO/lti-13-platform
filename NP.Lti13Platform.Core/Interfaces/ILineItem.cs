@@ -12,11 +12,11 @@ public interface ILineItem
     /// </summary>
     public string LineItemId { get; }
 
-    /// <summary>
-    /// Gets or sets the deployment ID.
-    /// Identifies the platform-tool integration that this line item is associated with. This value is provided by the platform when the tool is installed/registered.
-    /// </summary>
-    public string DeploymentId { get; }
+    ///// <summary>
+    ///// Gets or sets the deployment ID.
+    ///// Identifies the platform-tool integration that this line item is associated with. This value is provided by the platform when the tool is installed/registered.
+    ///// </summary>
+    //public string DeploymentId { get; }
 
     /// <summary>
     /// Gets or sets the context ID.

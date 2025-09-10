@@ -199,7 +199,6 @@ public static class Startup
                             await deepLinkingDataService.SaveLineItemAsync(new LineItem
                             {
                                 LineItemId = string.Empty,
-                                DeploymentId = deployment.DeploymentId,
                                 ContextId = contextId,
                                 Label = ci.LtiResourceLink.LineItem!.Label ?? ci.LtiResourceLink.Title ?? ci.LtiResourceLink.Type,
                                 ScoreMaximum = ci.LtiResourceLink.LineItem.ScoreMaximum,

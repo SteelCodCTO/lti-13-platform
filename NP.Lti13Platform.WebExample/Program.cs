@@ -225,9 +225,9 @@ namespace NP.Lti13Platform.WebExample
             return Task.FromResult<IResourceLink?>(ResourceLinks.SingleOrDefault(r => r.ResourceLinkId == resourceLinkId && r.DeploymentId == deploymentId));
         }
 
-        Task<IPartialList<ILineItem>> ILti13CoreDataService.GetLineItemsAsync(string deploymentId, string contextId, int pageIndex, int limit, string? resourceId, string? resourceLinkId, string? tag, CancellationToken cancellationToken)
+        Task<IPartialList<ILineItem>> ILti13CoreDataService.GetLineItemsAsync(string contextId, int pageIndex, int limit, string? resourceId, string? resourceLinkId, string? tag, CancellationToken cancellationToken)
         {
-            var lineItems = LineItems.Where(li => li.DeploymentId == deploymentId && li.ContextId == contextId && (resourceId == null || li.ResourceId == resourceId) && (resourceLinkId == null || li.ResourceLinkId == resourceLinkId) && (tag == null || li.Tag == tag)).ToList();
+            var lineItems = LineItems.Where(li => li.ContextId == contextId && (resourceId == null || li.ResourceId == resourceId) && (resourceLinkId == null || li.ResourceLinkId == resourceLinkId) && (tag == null || li.Tag == tag)).ToList();
 
             return Task.FromResult<IPartialList<ILineItem>>(new PartialList<ILineItem>
             {
@@ -268,7 +268,7 @@ namespace NP.Lti13Platform.WebExample
             return await Task.FromResult<IAttempt?>(Attempts.OrderBy(a => a.AttemptNumber).FirstOrDefault(a => a.DeploymentId == deploymentId && a.LineItemId == lineItemId && a.UserId == userId));
         }
 
-        Task<IPartialList<IGrade>> ILti13AssignmentGradeDataService.GetGradesAsync(string deploymentId, string lineItemId, int pageIndex, int limit, string? userId, CancellationToken cancellationToken)
+        Task<IPartialList<IGrade>> ILti13AssignmentGradeDataService.GetGradesAsync(string lineItemId, int pageIndex, int limit, string? userId, CancellationToken cancellationToken)
         {
             var grades = Grades.Where(x => x.LineItemId == lineItemId && (userId == null || x.UserId == userId)).ToList();
 
@@ -279,9 +279,9 @@ namespace NP.Lti13Platform.WebExample
             });
         }
 
-        Task<IGrade?> ILti13CoreDataService.GetGradeAsync(string deploymentId, string lineItemId, string userId, CancellationToken cancellationToken)
+        Task<IGrade?> ILti13CoreDataService.GetGradeAsync(string lineItemId, string userId, CancellationToken cancellationToken)
         {
-            return Task.FromResult<IGrade?>(Grades.SingleOrDefault(g => g.DeploymentId == deploymentId && g.LineItemId == lineItemId && g.UserId == userId));
+            return Task.FromResult<IGrade?>(Grades.SingleOrDefault(g => g.LineItemId == lineItemId && g.UserId == userId));
         }
 
         Task ILti13AssignmentGradeDataService.SaveGradeAsync(IGrade grade, CancellationToken cancellationToken)

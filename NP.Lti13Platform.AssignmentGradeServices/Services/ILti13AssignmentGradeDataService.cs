@@ -41,7 +41,7 @@ namespace NP.Lti13Platform.AssignmentGradeServices.Services
         /// <param name="userId">Optional. The identifier of a specific user to retrieve grades for.</param>
         /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a partial list of grades.</returns>
-        Task<IPartialList<IGrade>> GetGradesAsync(string deploymentId, string lineItemId, int pageIndex, int limit, string? userId = null, CancellationToken cancellationToken = default);
+        Task<IPartialList<IGrade>> GetGradesAsync(string lineItemId, int pageIndex, int limit, string? userId = null, CancellationToken cancellationToken = default);
         
         /// <summary>
         /// Saves a grade to the data store.
