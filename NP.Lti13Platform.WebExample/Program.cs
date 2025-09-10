@@ -268,7 +268,7 @@ namespace NP.Lti13Platform.WebExample
             return await Task.FromResult<IAttempt?>(Attempts.OrderBy(a => a.AttemptNumber).FirstOrDefault(a => a.DeploymentId == deploymentId && a.LineItemId == lineItemId && a.UserId == userId));
         }
 
-        Task<IPartialList<IGrade>> ILti13AssignmentGradeDataService.GetGradesAsync(string lineItemId, int pageIndex, int limit, string? userId, CancellationToken cancellationToken)
+        Task<IPartialList<IGrade>> ILti13AssignmentGradeDataService.GetGradesAsync(string deploymentId, string lineItemId, int pageIndex, int limit, string? userId, CancellationToken cancellationToken)
         {
             var grades = Grades.Where(x => x.LineItemId == lineItemId && (userId == null || x.UserId == userId)).ToList();
 

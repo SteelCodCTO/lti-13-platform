@@ -446,7 +446,7 @@ public static class Startup
                     return Results.NotFound();
                 }
 
-                var gradesResponse = await assignmentGradeDataService.GetGradesAsync(lineItemId, pageIndex, limit ?? int.MaxValue, user_id, cancellationToken);
+                var gradesResponse = await assignmentGradeDataService.GetGradesAsync(deploymentId, lineItemId, pageIndex, limit ?? int.MaxValue, user_id, cancellationToken);
 
                 if (gradesResponse.TotalItems > 0 && limit.HasValue)
                 {
