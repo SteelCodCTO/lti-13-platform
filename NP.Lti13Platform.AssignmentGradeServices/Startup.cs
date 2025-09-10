@@ -196,7 +196,6 @@ public static class Startup
                 var lineItemId = await assignmentGradeDataService.SaveLineItemAsync(new LineItem
                 {
                     LineItemId = string.Empty,
-                    DeploymentId = deploymentId,
                     ContextId = contextId,
                     Label = request.Label,
                     ResourceId = request.ResourceId,
@@ -258,7 +257,7 @@ public static class Startup
                 }
 
                 var lineItem = await assignmentGradeDataService.GetLineItemAsync(lineItemId, cancellationToken);
-                if (lineItem?.DeploymentId != deploymentId || lineItem.ContextId != contextId)
+                if (lineItem == null || lineItem.ContextId != contextId)
                 {
                     return Results.NotFound();
                 }
@@ -311,7 +310,7 @@ public static class Startup
                 }
 
                 var lineItem = await assignmentGradeDataService.GetLineItemAsync(lineItemId, cancellationToken);
-                if (lineItem?.DeploymentId != deploymentId || lineItem.ContextId != contextId)
+                if (lineItem == null || lineItem.ContextId != contextId)
                 {
                     return Results.NotFound();
                 }
@@ -396,7 +395,7 @@ public static class Startup
                 }
 
                 var lineItem = await assignmentGradeDataService.GetLineItemAsync(lineItemId, cancellationToken);
-                if (lineItem?.DeploymentId != deploymentId || lineItem.ContextId != contextId)
+                if (lineItem == null || lineItem.ContextId != contextId)
                 {
                     return Results.NotFound();
                 }
@@ -441,7 +440,7 @@ public static class Startup
                 }
 
                 var lineItem = await assignmentGradeDataService.GetLineItemAsync(lineItemId, cancellationToken);
-                if (lineItem?.DeploymentId != deploymentId || lineItem.ContextId != contextId)
+                if (lineItem == null || lineItem.ContextId != contextId)
                 {
                     return Results.NotFound();
                 }
@@ -515,7 +514,7 @@ public static class Startup
                 }
 
                 var lineItem = await assignmentGradeDataService.GetLineItemAsync(lineItemId, cancellationToken);
-                if (lineItem?.DeploymentId != deploymentId || lineItem.ContextId != contextId)
+                if (lineItem == null || lineItem.ContextId != contextId)
                 {
                     return Results.NotFound();
                 }

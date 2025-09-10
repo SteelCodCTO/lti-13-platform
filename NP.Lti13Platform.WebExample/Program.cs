@@ -225,9 +225,9 @@ namespace NP.Lti13Platform.WebExample
             return Task.FromResult<IResourceLink?>(ResourceLinks.SingleOrDefault(r => r.ResourceLinkId == resourceLinkId && r.DeploymentId == deploymentId));
         }
 
-        Task<IPartialList<ILineItem>> ILti13CoreDataService.GetLineItemsAsync(string deploymentId, string contextId, int pageIndex, int limit, string? resourceId, string? resourceLinkId, string? tag, CancellationToken cancellationToken)
+        Task<IPartialList<ILineItem>> ILti13CoreDataService.GetLineItemsAsync(string contextId, int pageIndex, int limit, string? resourceId, string? resourceLinkId, string? tag, CancellationToken cancellationToken)
         {
-            var lineItems = LineItems.Where(li => li.DeploymentId == deploymentId && li.ContextId == contextId && (resourceId == null || li.ResourceId == resourceId) && (resourceLinkId == null || li.ResourceLinkId == resourceLinkId) && (tag == null || li.Tag == tag)).ToList();
+            var lineItems = LineItems.Where(li => li.ContextId == contextId && (resourceId == null || li.ResourceId == resourceId) && (resourceLinkId == null || li.ResourceLinkId == resourceLinkId) && (tag == null || li.Tag == tag)).ToList();
 
             return Task.FromResult<IPartialList<ILineItem>>(new PartialList<ILineItem>
             {

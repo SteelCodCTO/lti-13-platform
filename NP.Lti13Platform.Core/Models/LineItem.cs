@@ -14,11 +14,11 @@ public class LineItem: ILineItem
     /// </summary>
     public required string LineItemId { get; set; }
 
-    /// <summary>
-    /// Gets or sets the deployment ID.
-    /// Identifies the platform-tool integration that this line item is associated with. This value is provided by the platform when the tool is installed/registered.
-    /// </summary>
-    public required string DeploymentId { get; set; }
+    ///// <summary>
+    ///// Gets or sets the deployment ID.
+    ///// Identifies the platform-tool integration that this line item is associated with. This value is provided by the platform when the tool is installed/registered.
+    ///// </summary>
+    //public required string DeploymentId { get; set; }
 
     /// <summary>
     /// Gets or sets the context ID.
@@ -89,7 +89,6 @@ public class LineItem: ILineItem
         return new LineItem
         {
             LineItemId = li.LineItemId,
-            DeploymentId = li.DeploymentId,
             ContextId = li.ContextId,
             ScoreMaximum = li.ScoreMaximum,
             Label = li.Label,
