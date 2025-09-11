@@ -19,10 +19,10 @@ public interface ITool
     /// </summary>
     public string ClientId { get; }
 
-    /// <summary>
-    /// Gets or sets the deployment ID for the tool.
-    /// </summary>
-    public string DeploymentId { get; }
+    ///// <summary>
+    ///// Gets or sets the deployment ID for the tool.
+    ///// </summary>
+    //public string DeploymentId { get; }
 
     /// <summary>
     /// Gets or sets the OIDC initiation URL for the tool.
